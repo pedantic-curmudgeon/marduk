@@ -15,4 +15,4 @@ if __name__ == '__main__':
 # VS Code Interpreter: ~/.pyenv/versions/3.8.2/bin/python3
 # cd to ~/.pyenv/versions/3.8.2/lib/python3.8/site-packages/marduk/pytests
 # pyenv shell 3.8.2
-# Run Command: python runner.py
+# Run Command: python runner.py >auto_tests.txt
