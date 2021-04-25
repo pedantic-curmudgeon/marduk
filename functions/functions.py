@@ -7,7 +7,7 @@ def stringify_list(list_: list,
     """Converts a list to a string representation.
 
     Accepts a list of mixed data type objects and returns a string
-    representation. Optionally enclosed each item in single-quotes.
+    representation. Optionally encloses each item in single-quotes.
 
     Args:
         list_: The list to convert to a string.
