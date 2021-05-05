@@ -52,18 +52,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
     steps:
-      - name: Check Directory
-        run: |
-          cd /app/marduk/
-          ls -la
-          cd pytests
-          ls -la
+      # - name: Check Directory
+      #   run: |
+      #     cd /app/marduk/
+      #     ls -la
+      #     cd pytests
+      #     ls -la
       - name: Run Pytests
         run: |
           cd /app/marduk/pytests/
           python3 /app/marduk/pytests/runner.py
       - name: Publish Deliverable
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: test_results
           path: /app/marduk/pytests/auto_tests.xml
