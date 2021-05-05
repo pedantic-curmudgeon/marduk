@@ -20,6 +20,9 @@
 name: Publish Docker Image
 on: [push]
 jobs:
+  strategy:
+    max-parallel: 1
+
   push_to_registry:
     name: Push Docker Image to Docker Hub
     runs-on: ubuntu-latest
