@@ -20,8 +20,6 @@
 name: Publish Docker Image
 on: [push]
 jobs:
-  strategy:
-    max-parallel: 1
 
   push_to_registry:
     name: Push Docker Image to Docker Hub
@@ -46,6 +44,7 @@ jobs:
 
   run_pytests:
     name: Run Automated Tests
+    needs: push_to_registry
     runs-on: ubuntu-latest
     container:
       image: raeganbarker/marduk:latest
