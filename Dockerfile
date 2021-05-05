@@ -17,4 +17,4 @@ RUN python3
 ENV PYTHONPATH "/app"
 
 # Run Pytests.
-CMD python3 /app/marduk/pytests/runner.py
+# CMD python3 /app/marduk/pytests/runner.py
