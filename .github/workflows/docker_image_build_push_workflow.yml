@@ -59,7 +59,9 @@ jobs:
           cd pytests
           ls -la
       - name: Run Pytests
-        run: python3 /app/marduk/pytests/runner.py
+        run: |
+        cd /app/marduk/pytests/
+        python3 /app/marduk/pytests/runner.py
       - name: Publish Deliverable
         uses: actions/upload-artifact@v1
         with:
