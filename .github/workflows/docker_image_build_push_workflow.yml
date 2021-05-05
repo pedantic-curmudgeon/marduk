@@ -41,15 +41,8 @@ jobs:
           push: true
           tags: raeganbarker/marduk:latest
 
-
-# Next step: https://towardsdatascience.com/speed-up-your-pytest-github-actions-with-docker-6b3a85b943f
-
-# Next step (better?): https://stackoverflow.com/questions/58930529/github-action-how-do-i-run-commands-inside-a-docker-container
-
-# Credentials: https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-in-github-actions
-
   run_pytests:
-    name: Run Pytests
+    name: Run Automated Tests
     runs-on: ubuntu-latest
     container:
       image: raeganbarker/marduk:latest
@@ -60,6 +53,12 @@ jobs:
       - name: Run Pytests
         run: python3 /app/marduk/pytests/runner.py
 
+
+# Next step: https://towardsdatascience.com/speed-up-your-pytest-github-actions-with-docker-6b3a85b943f
+
+# Next step (better?): https://stackoverflow.com/questions/58930529/github-action-how-do-i-run-commands-inside-a-docker-container
+
+# Credentials: https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-in-github-actions
 
 
 # Could just push a marduk:tests image with the command in it? That way don't
