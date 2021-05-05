@@ -58,6 +58,12 @@ jobs:
       #     ls -la
       #     cd pytests
       #     ls -la
+      - name: Print System Path
+        run: python3 -c "import sys; print(sys.path)"
+      - name: Print Python Path
+        run: echo $PYTHONPATH
+      - name: Import Marduk
+        run: python3 -c "import marduk"
       - name: Run Pytests
         run: |
           cd /app/marduk/pytests/
