@@ -40,3 +40,35 @@ jobs:
           pull: true
           push: true
           tags: raeganbarker/marduk:latest
+
+
+# Next step: https://towardsdatascience.com/speed-up-your-pytest-github-actions-with-docker-6b3a85b943f
+
+# Next step (better?): https://stackoverflow.com/questions/58930529/github-action-how-do-i-run-commands-inside-a-docker-container
+
+# Credentials: https://stackoverflow.com/questions/64033686/how-can-i-use-private-docker-image-in-github-actions
+
+  run_pytests:
+    name: Run Pytests
+    runs-on: ubuntu-latest
+    container:
+      image: raeganbarker/marduk:latest
+      credentials:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+    steps:
+      - name: Run Pytests
+        run: python3 /app/marduk/pytests/runner.py
+
+
+
+# Could just push a marduk:tests image with the command in it? That way don't
+# have to do anything crazy to get the tests to run via actions?
+# But what about surfacing the deliverable?
+# Can GitHub just get that as an artifact for me from the volume by referencing
+# the filesystem path?
+
+# Progress: Figured out how to publish an image.
+# Next: Figure out how to retrieve the image.
+# Next: Figure out how to issue commands to a container from the image.
+# Next: Figure out how to retrieve an artifact from the image.
