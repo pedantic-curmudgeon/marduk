@@ -11,8 +11,6 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Copy full repo code to image.
 COPY . .
 
-RUN python3
-
 # Set Python path environment variable.
 ENV PYTHONPATH "/app"
 
