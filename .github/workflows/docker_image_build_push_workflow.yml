@@ -73,6 +73,11 @@ jobs:
         with:
           name: test_results
           path: /app/marduk/pytests/auto_tests.xml
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+          if: always()
+          with:
+            files: /app/marduk/pytests/*.xml
 
 
 # Next step: https://towardsdatascience.com/speed-up-your-pytest-github-actions-with-docker-6b3a85b943f
@@ -88,7 +93,21 @@ jobs:
 # Can GitHub just get that as an artifact for me from the volume by referencing
 # the filesystem path?
 
-# Progress: Figured out how to publish an image.
-# Next: Figure out how to retrieve the image.
-# Next: Figure out how to issue commands to a container from the image.
-# Next: Figure out how to retrieve an artifact from the image.
+# Progress: Figured out how to publish an image. [Done]
+
+# Next: Figure out how to retrieve the image. [Done]
+
+# Next: Figure out how to issue commands to a container from the image. [Done]
+
+# Next: Figure out how to retrieve an artifact from the image. [Done]
+
+# Next: Figure out how to publish the testing artifact in a visible way.
+
+# https://github.com/EnricoMi/publish-unit-test-result-action
+
+# Need to pass the artifact between jobs to expose to publisher?
+# Would basically add an extra job, copy the deliverable from the second job,
+# and then make it available from the third job?
+
+# https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts
+
