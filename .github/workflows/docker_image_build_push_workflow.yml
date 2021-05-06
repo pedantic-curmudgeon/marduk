@@ -68,16 +68,30 @@ jobs:
         run: |
           cd /app/marduk/pytests/
           python3 /app/marduk/pytests/runner.py
-      - name: Publish Deliverable
+      - name: Publish Artifact
         uses: actions/upload-artifact@v2
         with:
           name: test_results
           path: /app/marduk/pytests/auto_tests.xml
+
+      # New from here.
+
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     path: artifacts
+
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
-          files: /app/marduk/pytests/*.xml
+          files: artifacts/**/*.xml
+
+      # - name: Publish Unit Test Results
+      #   uses: EnricoMi/publish-unit-test-result-action@v1
+      #   if: always()
+      #   with:
+      #     files: /app/marduk/pytests/*.xml
 
 
 # Next step: https://towardsdatascience.com/speed-up-your-pytest-github-actions-with-docker-6b3a85b943f
