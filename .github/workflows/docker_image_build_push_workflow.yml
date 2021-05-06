@@ -85,13 +85,13 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
-          files: /app/marduk/pytests/auto_tests.xml
+          files: artifacts/test_results/*.xml
 
       # - name: Publish Unit Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v1
       #   if: always()
       #   with:
-      #     files: /app/marduk/pytests/*.xml
+      #     files: /app/marduk/pytests/*.xml # /app/marduk/pytests/auto_tests.xml
 
 
 # Next step: https://towardsdatascience.com/speed-up-your-pytest-github-actions-with-docker-6b3a85b943f
