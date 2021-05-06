@@ -74,13 +74,24 @@ jobs:
           name: test_results
           path: /app/marduk/pytests/auto_tests.xml
 
-      # New from here.
+      # Download artifact to current working directory.
 
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: test_results
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: test_results
 
+      # - name: Publish Unit Test Results
+      #   uses: EnricoMi/publish-unit-test-result-action@v1
+      #   if: always()
+      #   with:
+      #     files: |
+      #       *.xml
+
+      # Experimental.
+      - name: Copy Artifact
+        run: |
+          cp /app/marduk/pytests/auto_tests.xml .
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
