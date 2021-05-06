@@ -74,13 +74,11 @@ jobs:
           name: test_results
           path: /app/marduk/pytests/auto_tests.xml
 
-      # Download artifact to current working directory.
-
+      # WORKS:
       # - name: Download Artifact
       #   uses: actions/download-artifact@v2
       #   with:
       #     name: test_results
-
       # - name: Publish Unit Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v1
       #   if: always()
@@ -88,10 +86,11 @@ jobs:
       #     files: |
       #       *.xml
 
+      # WORKS?
       # Experimental.
       # - name: Copy Artifact
       #   run: |
-      #     cp /app/marduk/pytests/auto_tests.xml ./test_results
+      #     cp /app/marduk/pytests/auto_tests.xml .
       #     ls -la
       # - name: Publish Unit Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v1
@@ -100,22 +99,18 @@ jobs:
       #     files: |
       #       *.xml
 
+      # WORKS:
       - name: Copy Artifact
         run: |
+          pwd
           mkdir test_results
           cp /app/marduk/pytests/auto_tests.xml ./test_results
-          ls -la
-          cd test_results
-          ls -la
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
           files: |
             test_results/*.xml
-
-#            /test_results/*.xml
-#            /artifacts/test_results/*.xml
 
       # Maybe we just want a command to copy the file to the CWD for upload?
 
@@ -147,7 +142,7 @@ jobs:
 
 # Next: Figure out how to retrieve an artifact from the image. [Done]
 
-# Next: Figure out how to publish the testing artifact in a visible way.
+# Next: Figure out how to publish the testing artifact in a visible way. [Done]
 
 # https://github.com/EnricoMi/publish-unit-test-result-action
 
@@ -156,4 +151,10 @@ jobs:
 # and then make it available from the third job?
 
 # https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts
+
+# This can be done by either 1) downloading the artifact (defaults to CWD)
+# or 2) copying the artifact to a folder under the CWD for easier publiction.
+
+# Is there a better third option with the files options for the unit-test-result-action?
+# The wildcard system seems very confusing to me.
 
