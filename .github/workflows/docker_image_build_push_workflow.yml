@@ -104,12 +104,14 @@ jobs:
         run: |
           cp /app/marduk/pytests/auto_tests.xml ./test_results
           ls -la
+          cd test_results
+          ls -la
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
           files: |
-            /test_results/*.xml
+            test_results/*.xml
 
 #            /test_results/*.xml
 #            /artifacts/test_results/*.xml
