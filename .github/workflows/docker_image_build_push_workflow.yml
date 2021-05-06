@@ -84,10 +84,11 @@ jobs:
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
-        with: |
-          *.xml
-          /test_results/*.xml
-          /artifacts/test_results/*.xml
+        with:
+          files: |
+            *.xml
+            /test_results/*.xml
+            /artifacts/test_results/*.xml
 
       # Maybe we just want a command to copy the file to the CWD for upload?
 
