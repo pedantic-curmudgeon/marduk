@@ -87,8 +87,8 @@ jobs:
         with:
           files: |
             *.xml
-            /test_results/*.xml
-            /artifacts/test_results/*.xml
+#            /test_results/*.xml
+#            /artifacts/test_results/*.xml
 
       # Maybe we just want a command to copy the file to the CWD for upload?
 
