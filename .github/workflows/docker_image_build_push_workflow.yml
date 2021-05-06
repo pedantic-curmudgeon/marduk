@@ -102,6 +102,7 @@ jobs:
 
       - name: Copy Artifact
         run: |
+          mkdir test_results
           cp /app/marduk/pytests/auto_tests.xml ./test_results
           ls -la
           cd test_results
