@@ -68,7 +68,7 @@ jobs:
         run: |
           cd /app/marduk/pytests/
           python3 /app/marduk/pytests/runner.py
-      - name: Publish Artifact
+      - name: Upload Test Results
         uses: actions/upload-artifact@v2
         with:
           name: test_results
@@ -100,19 +100,20 @@ jobs:
       #       *.xml
 
       # WORKS:
-      - name: Copy Artifact
+      - name: Copy Test Results
         run: |
           pwd
           mkdir test_results
           cp /app/marduk/pytests/auto_tests.xml ./test_results
-      - name: Publish Unit Test Results
+      - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
           files: |
             test_results/*.xml
 
-      # Maybe we just want a command to copy the file to the CWD for upload?
+
+      # Maybe we just want a command to copy the file to the CWD for upload? [Done]
 
       # - name: Publish Unit Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v1
@@ -158,3 +159,7 @@ jobs:
 # Is there a better third option with the files options for the unit-test-result-action?
 # The wildcard system seems very confusing to me.
 
+# Next: Clean up branch.
+# Next: Produce a similar example without using a Docker image.
+# Next: Install Docker compose on local PC.
+# Next: Produce a similar example with a Docker compose setup.
