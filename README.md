@@ -39,7 +39,7 @@ Test class with test scenarios for the `marduk.functions` module.
 ### [runner.py](pytests/runner.py)
 Test runner to execute tests via `pytest`.
 
-### [docker_image_build_push_workflow.yml](.github/workflows/docker_image_build_push_workflow.yml)
+### [on_push_docker_build_publish_and_test.yml](.github/workflows/on_push_docker_build_publish_and_test.yml)
 A custom workflow which performs the following actions on any `push`:
 1. Builds the `marduk` Dockerfile
 1. Publishes the image to DockerHub
