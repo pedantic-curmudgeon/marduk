@@ -1,0 +1,79 @@
+name: Build, Publish, & Test Docker Image
+on: [push]
+jobs:
+  push_to_registry:
+    name: Push Docker Image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Log In to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          pull: true
+          push: true
+          tags: raeganbarker/marduk:latest
+  run_pytests:
+    name: Run Automated Tests
+    needs: push_to_registry
+    runs-on: ubuntu-latest
+    container:
+      image: raeganbarker/marduk:latest
+      credentials:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+    steps:
+      - name: Run Pytests
+        run: |
+          cd /app/marduk/pytests/
+          python3 /app/marduk/pytests/runner.py
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test_results
+          path: /app/marduk/pytests/auto_tests.xml
+      - name: Copy Test Results
+        run: |
+          mkdir test_results
+          cp /app/marduk/pytests/auto_tests.xml ./test_results
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: |
+            test_results/*.xml
+
+      # # Examples of running additional commands in terminal.
+      # - name: Check Directory
+      #   run: |
+      #     cd /app/marduk/
+      #     ls -la
+      #     cd pytests
+      #     ls -la
+      # - name: Print System Path
+      #   run: python3 -c "import sys; print(sys.path)"
+      # - name: Print Python Path
+      #   run: echo $PYTHONPATH
+      # - name: Import Marduk
+      #   run: python3 -c "import marduk"
+
+      # # Example of downloading artifact from workflow to Docker container.
+      # Download and Publish Artifact:
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: test_results
+      # - name: Publish Unit Test Results
+      #   uses: EnricoMi/publish-unit-test-result-action@v1
+      #   if: always()
+      #   with:
+      #     files: |
+      #       *.xml
