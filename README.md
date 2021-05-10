@@ -1,12 +1,15 @@
 # marduk
 
 ## Scope
-A basic repo with examples of CI/CD-related workflows using Docker,
-DockerHub, and GitHub functionality. When a push is made to the repo:
+A basic repo with a custom `functions` module which includes examples
+of CI/CD-related image build, publish, and test workflows using Docker,
+DockerHub, and GitHub functionality.
+
+When a push is made to the repo:
 1. A Dockerfile containing the repo code is built and the image is
 published to DockerHub.
-1. The tests are executed in a Docker container run from the newly-
-published image.
+1. The tests are executed in a Docker container run from the
+newly-published image.
 1. The test results are surfaced to the GitHub workflow as an artifact
 on the workflow execution `Summary` and in the `Unit Test Results` job.
 
