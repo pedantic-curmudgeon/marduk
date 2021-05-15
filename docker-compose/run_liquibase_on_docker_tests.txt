@@ -12,11 +12,14 @@ docker run --rm -v /home/raeganbarker/.pyenv/versions/3.8.2/lib/python3.8/site-p
 # Need to create a network for the two images??? Right now have to specify the external (instead of local) IP.
 
 # Network stuff:
+
+# Create the network.
 docker network create docker-net-001
 
+# Add a running container to the network.
 docker network connect docker-net-001 some-mariadb
 
-Add to docker run commands:
+# Add to docker run commands to set network:
 --network=docker-net-001
 
 THIS WORKS (START)
@@ -27,3 +30,9 @@ THIS WORKS (END)
 This works because:
 1. they're in the same network
 2. The IP/host reference for the MariaDB database in the run command for Liquibase specifies the container as the host.
+
+When using compose, a network should automatically be created, so the manual network creation/mapping steps above shouldn't be required.
+
+# Use docker inspect <container> to view details
+
+# Note: Adding the container to the docker network does not seem to affect my ability to connect to the database via localhost.
