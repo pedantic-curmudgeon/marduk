@@ -1,0 +1,29 @@
+# liquibase run command
+# https://docs.liquibase.com/workflows/liquibase-community/using-liquibase-and-docker.html
+
+
+--Start Database
+docker run -p 127.0.0.1:3306:3306  --name some-mariadb -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=main -d mariadb:10.5.9
+
+--Run Liquibase
+docker run --rm -v /home/raeganbarker/.pyenv/versions/3.8.2/lib/python3.8/site-packages/marduk/docker-compose:/liquibase/changelog liquibase/liquibase --url=jdbc:mariadb://172.17.0.2:3306/main --username="root" --password="my-secret-pw" --changeLogFile=liquibase_changelog_mysql_mariadb.sql --logLevel=Error update
+
+
+# Need to create a network for the two images??? Right now have to specify the external (instead of local) IP.
+
+# Network stuff:
+docker network create docker-net-001
+
+docker network connect docker-net-001 some-mariadb
+
+Add to docker run commands:
+--network=docker-net-001
+
+THIS WORKS (START)
+docker run -p 127.0.0.1:3306:3306 --network=docker-net-001 --name some-mariadb -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=main -d mariadb:10.5.9
+docker run --rm --network=docker-net-001 -v /home/raeganbarker/.pyenv/versions/3.8.2/lib/python3.8/site-packages/marduk/docker-compose:/liquibase/changelog liquibase/liquibase --url=jdbc:mariadb://some-mariadb:3306/main --username="root" --password="my-secret-pw" --changeLogFile=liquibase_changelog_mysql_mariadb.sql --logLevel=Error update
+THIS WORKS (END)
+
+This works because:
+1. they're in the same network
+2. The IP/host reference for the MariaDB database in the run command for Liquibase specifies the container as the host.

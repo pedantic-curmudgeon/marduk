@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+    # Start test database.
+    mariadb:
+        image: "mariadb:latest"
+        restart: "always"
+        environment:
+            MYSQL_DATABASE: "test_db"
+            MYSQL_ROOT_PASSWORD: "test_db_password"
+    # Run SQL changesets on test database.
+    liquibase:
+        image: "liquibase/liquibase:latest"
+        # restart: "always"
+        depends_on:
+            - "mariadb"
+        # command:
+        # Can we run the liquibase update command here?
+
+    # Run repo tests on test database.
+    # repo:
+    #     build: .
+    #     restart: always
+    #     depends_on: liquibase
+
+
+# https://docs.docker.com/compose/startup-order/
+# repo docker image should include the test execution statement?
+# need to map volumes so that we can get the test results from the repo?
+# in a CI/CD world, we would build/push the repo image, and then reference
+# it above instead of using 'build . ' , right?
+# Mariadb always uses port 3306?
+
+# This might be useful: https://github.com/ufoscout/docker-compose-wait
+# It would need to go into any "waiting" image, though?
+
+# docker-compose up -d
+# docker-compose down --volumes
+
