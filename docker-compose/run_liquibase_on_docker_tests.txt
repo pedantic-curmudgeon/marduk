@@ -29,10 +29,25 @@ THIS WORKS (END)
 
 This works because:
 1. they're in the same network
-2. The IP/host reference for the MariaDB database in the run command for Liquibase specifies the container as the host.
+2. The IP/host reference for the MariaDB database in the run command for Liquibase specifies the container as the host. Using localhost or some other derivative would simply look in the localhost of the running (Liquibase) container and not find anything!
 
 When using compose, a network should automatically be created, so the manual network creation/mapping steps above shouldn't be required.
 
 # Use docker inspect <container> to view details
 
 # Note: Adding the container to the docker network does not seem to affect my ability to connect to the database via localhost.
+
+NEXT:
+- Try to get this same scenario working in a docker-compose scenario
+- Then try to layer on an additional service (for a "content" repo)
+- And get the test output to publish to a mount
+- Then it can be surfaced on a GitHub/Jenkins/etc. CI/CD solution.
+
+
+# STEPS:
+#1.
+docker network create docker-net-001
+#2.
+docker run -p 127.0.0.1:3306:3306 --network=docker-net-001 --name some-mariadb -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=main -d mariadb:10.5.9
+# 3.
+docker run --rm --network=docker-net-001 -v /home/raeganbarker/.pyenv/versions/3.8.2/lib/python3.8/site-packages/marduk/docker-compose:/liquibase/changelog liquibase/liquibase --url=jdbc:mariadb://some-mariadb:3306/main --username="root" --password="my-secret-pw" --changeLogFile=liquibase_changelog_mysql_mariadb.sql --logLevel=Error update
