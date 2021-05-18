@@ -79,3 +79,18 @@ services:
 # Progress:
 # Starts database
 # Tries to update with Liquibase and keeps trying until exit code 0 reached
+
+# Next steps:
+# Set up a test using a compose file instead of just a single docker image
+# https://gist.github.com/cecilemuller/437d7340b9f095cf5635dc9780a05092
+# https://stackoverflow.com/questions/61491484/how-to-cache-docker-compose-build-inside-github-action
+# https://github.com/peter-evans/docker-compose-actions-workflow/blob/master/README.md
+# https://github.com/docker/login-action
+# It looks like the commands are just run on the GH VM for docker compose
+# So, we need to log in first, I believe, since we're referencing private repos.
+# But can just log in with this like in first example? https://github.com/docker/login-action
+# Have multiple dockerfiles in same directory?
+# With compose, can we just do a build . (Or whatever directory!)?
+# And bypass publishing to DockerHub?
+# Would like to just publish the production image to DockerHub on PR approval?
+# Might still be good to build the image. For testing purposes.
