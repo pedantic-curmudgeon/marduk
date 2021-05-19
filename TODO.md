@@ -1,7 +1,8 @@
 # To-Do
 1. Clean up Docker branch, back up, and set aside [Done]
 1. Produce similar automated testing without using a Dockerfile
-1. Install Docker Compose on local PC
+1. Install Docker Compose on local PC [Done]
+[Link](https://docs.docker.com/compose/install/)
 1. Test Docker Compose on local PC
 1. Produce similar automated testing with a Docker Compose file
 
