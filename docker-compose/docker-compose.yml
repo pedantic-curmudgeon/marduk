@@ -94,3 +94,7 @@ services:
 # And bypass publishing to DockerHub?
 # Would like to just publish the production image to DockerHub on PR approval?
 # Might still be good to build the image. For testing purposes.
+# Need to specify a volume so the tests execute to it and can be retrieved from there?
+# Can my volume just map /github/workspace:/app/marduk/pytests?
+
+# Where to get the test files from? https://github.community/t/how-can-i-access-the-current-repo-context-and-files-from-a-docker-container-action/17711/8
