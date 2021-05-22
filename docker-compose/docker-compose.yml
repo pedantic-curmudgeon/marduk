@@ -22,8 +22,129 @@ services:
             - "db"
         volumes:
             - "/home/raeganbarker/.pyenv/versions/3.8.2/lib/python3.8/site-packages/marduk/docker-compose:/liquibase/changelog"
+            - "data_volume:/liquibase"
+        entrypoint: ["/bin/sh","-c"]
+        # Wait for Liquibase migration to complete.
         command:
-            liquibase --url="jdbc:mariadb://db_container:3306/${DB_NAME}" --username="${DB_USER}" --password="${DB_PASSWORD}" --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" update
+        - |
+            until liquibase \
+                --url="jdbc:mariadb://db_container:3306/${DB_NAME}" \
+                --username="${DB_USER}" \
+                --password="${DB_PASSWORD}" \
+                --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" \
+                update; \
+                do sleep 5; \
+                done
+            touch liquibase.complete
+            ls -la
+            pwd
+            exit
+    repo:
+        image: "raeganbarker/marduk:test"
+        container_name: "repo_container"
+        restart: "on-failure"
+        depends_on:
+            - "liquibase"
+        volumes:
+            - "data_volume:/app/marduk/bkp"
+        entrypoint: ["/bin/sh","-c"]
+        command:
+        - |
+            until [ -f /app/marduk/bkp/liquibase.complete ]; \
+                do echo "Waiting for Liquibase to complete...";
+                ls -la;
+                sleep 5; \
+                done
+            python3 /app/marduk/pytests/runner.py
+
+
+volumes:
+    data_volume:
+
+# TODO: Create a placeholder docker_volume directory for the data volume in the dockerfile /app/docker_volume
+# TODO: Obtain the liquibase changelog
+
+
+# docker compose up
+# docker compose down --volumes
+
+        # pwd \
+        # && \
+        # ls -la \
+        # && \
+        # until [ -f /app/marduk/liquibase.complete ]; \
+        #     do echo "Waiting for Liquibase to complete...";
+        #     ls -la;
+        #     sleep 5; \
+        #     done \
+        # && \
+        # pwd \
+        # && \
+        # cd pytests
+        # && \
+        # ls -la \
+        # && \
+        # exit
+
+
+        # pwd \
+        # && \
+        # python3 /app/marduk/pytests/runner.py \
+        # && \
+        # exit
+
+
+        # until [ -f /app/marduk/liquibase.complete ]; \
+        # do echo "Waiting for Liquibase to complete...";
+        # ls -la;
+        # sleep 5; \
+        # done
+
+# TODO: Add content repo. Map to volume. Use conditional execution of tests. Make sure the container stops!
+
+        # # content
+        # entrypoint: ["/bin/sh","-c"]
+        # command:
+        # - |
+        #     while [ ! -f /app/marduk/liquibase.complete ]; \
+        #         do sleep 5; \
+        #         done
+        #     python3 /app/marduk/pytests/runner.py
+        # exit?
+
+
+# while [ ! -f 1.txt ]; do echo "Waiting for file..."; sleep 5; done
+
+
+# works:
+# until liquibase --url="jdbc:mariadb://db_container:3306/${DB_NAME}" --username="${DB_USER}" --password="${DB_PASSWORD}" --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" update; do sleep 5; done
+# touch migration_comple.txt
+# pwd
+# ls -la
+
+
+# while [ ! -f 0.txt ]; do liquibase --url="jdbc:mariadb://db_container:3306/${DB_NAME}" --username="${DB_USER}" --password="${DB_PASSWORD}" --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" update; touch `$$?`.txt; echo "Waiting for Liquibase to succeed"; ls -la; sleep 5 ; done
+# touch complete.txt
+
+    # liquibase --url="jdbc:mariadb://db_container:3306/${DB_NAME}" --username="${DB_USER}" --password="${DB_PASSWORD}" --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" update
+    # touch `echo $$?`.txt
+    # ls -la
+    # pwd
+
+    # while [ `docker inspect --format '{{json .State.Running}}' repo_container` = "true" ]; do echo "Waiting for repo_container to exit..."; docker ps; sleep 5; done
+
+
+# sh -c "liquibase --url="jdbc:mariadb://db_container:3306/${DB_NAME}" \
+#         --username="${DB_USER}" --password="${DB_PASSWORD}" \
+#         --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" update \
+#         && touch `echo $$?`.txt && pwd"
+
+# liquibase --url="jdbc:mariadb://db_container:3306/${DB_NAME}" --username="${DB_USER}" --password="${DB_PASSWORD}" --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" update
+
+# liquibase --url="jdbc:mariadb://db_container:3306/${DB_NAME}" \
+# --username="${DB_USER}" --password="${DB_PASSWORD}" \
+# --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" update \
+# && touch `echo $$?`.txt && pwd
 
 
 # networks:
