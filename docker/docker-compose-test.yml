@@ -50,7 +50,7 @@ services:
         # Execute pytests once Liquibase update has executed succesfully.
         command:
         - |
-            until [ -f /app/docker_volume.complete ]; \
+            until [ -f /app/docker_volume/liquibase.complete ]; \
                 do echo "Waiting for Liquibase to complete...";
                 ls -la;
                 sleep 5; \
