@@ -19,7 +19,7 @@ services:
             - "db"
         volumes:
             # - "/home/raeganbarker/.pyenv/versions/3.8.2/lib/python3.8/site-packages/$REPO_NAME/docker-compose:/liquibase/changelog"
-
+            - "${GITHUB_WORKSPACE}/baldur:/liquibase/changelog"
             - "compose_volume:/liquibase"
         entrypoint: ["/bin/sh","-c"]
         # Write completion file once Liquibase update executes successfully.
