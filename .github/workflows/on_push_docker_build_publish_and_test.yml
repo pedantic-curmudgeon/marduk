@@ -18,6 +18,7 @@ jobs:
           pwd
           ls -la
           cd marduk
+          pwd
           ls -la
           cd ..
       - name: Checkout baldur
@@ -32,9 +33,11 @@ jobs:
           pwd
           ls -la
           cd baldur
-          ls - la
+          pwd
+          ls -la
           cd ..
 
+# /home/runner/work/marduk/marduk
 
 
   # push_image_to_docker_hub:
