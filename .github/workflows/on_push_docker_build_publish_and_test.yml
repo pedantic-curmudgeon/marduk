@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Run Docker Compose
         run: |
-          docker-compose -f $GITHUB_WORKSPACE/marduk/docker/docker-compose-test.yml up
+          docker-compose -f $GITHUB_WORKSPACE/marduk/docker/docker-compose-test.yml up -d
       - name: Wait for Tests to Complete
         run: >
           while [ `docker inspect --format '{{json .State.Running}}' repo_container` = "true" ];
