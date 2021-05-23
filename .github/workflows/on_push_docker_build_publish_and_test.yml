@@ -5,13 +5,23 @@ jobs:
   check_stuff:
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1
+      - name: Clean pwd + ls -la
         run: |
           pwd
           ls -la
-      - name: Step 2
+      - name: Checkout marduk
         uses: actions/checkout@v2
-      - name: Step 3
+      - name: Post-marduk checkout pwd + ls - la
+        run: |
+          pwd
+          ls -la
+      - name: Checkout baldur
+        uses: actions/checkout@v2
+        with:
+          repository: "raegancbarker/baldur"
+          ref: "example-docker-compose-intermediate"
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Post-baldur checkout pwd + ls - la
         run: |
           pwd
           ls -la
