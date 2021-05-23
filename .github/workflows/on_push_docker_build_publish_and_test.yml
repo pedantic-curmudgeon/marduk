@@ -23,7 +23,7 @@ jobs:
           file: docker/Dockerfile.test
   run_tests_in_docker_compose:
     name: Run Tests in Docker Compose
-    # needs: push_image_to_docker_hub
+    needs: push_image_to_docker_hub
     runs-on: ubuntu-latest
     steps:
       - name: Check Out Current Repo # marduk
