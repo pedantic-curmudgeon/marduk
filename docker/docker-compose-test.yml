@@ -1,0 +1,61 @@
+version: "3.9"
+services:
+    # Start test database.
+    db:
+        image: "mariadb:latest"
+        container_name: "db_container"
+        ports:
+            - "3306:3306"
+        restart: "on-failure"
+        environment:
+            MYSQL_DATABASE: "${DB_NAME}"
+            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+    # Run Liquibase change log against test database.
+    liquibase:
+        image: "liquibase/liquibase:latest"
+        container_name: "liquibase_container"
+        restart: "on-failure"
+        depends_on:
+            - "db"
+        volumes:
+            # - "/home/raeganbarker/.pyenv/versions/3.8.2/lib/python3.8/site-packages/$REPO_NAME/docker-compose:/liquibase/changelog"
+
+            - "compose_volume:/liquibase"
+        entrypoint: ["/bin/sh","-c"]
+        # Write completion file once Liquibase update executes successfully.
+        command:
+        - |
+            until liquibase \
+                --url="jdbc:mariadb://db_container:3306/${DB_NAME}" \
+                --username="${DB_USER}" \
+                --password="${DB_PASSWORD}" \
+                --changeLogFile="/changelog/liquibase_changelog_mysql_mariadb.sql" \
+                update; \
+                do sleep 5; \
+                done
+            touch liquibase.complete
+            ls -la
+            pwd
+            exit
+    # Run repo tests.
+    repo:
+        image: "raeganbarker/$REPO_NAME:$TAG"
+        container_name: "repo_container"
+        restart: "on-failure"
+        depends_on:
+            - "liquibase"
+        volumes:
+            - "compose_volume:/app/docker_volume"
+        entrypoint: ["/bin/sh","-c"]
+        # Execute pytests once Liquibase update has executed succesfully.
+        command:
+        - |
+            until [ -f /app/docker_volume.complete ]; \
+                do echo "Waiting for Liquibase to complete...";
+                ls -la;
+                sleep 5; \
+                done
+            python3 /app/$REPO_NAME/pytests/runner.py
+
+volumes:
+    compose_volume:
