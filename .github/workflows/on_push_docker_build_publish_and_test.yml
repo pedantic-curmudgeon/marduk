@@ -1,4 +1,6 @@
 name: Build, Publish, & Test Docker Image With Docker Compose
+on: [push]
+jobs:
   push_image_to_docker_hub:
     name: Push Docker Image to Docker Hub
     runs-on: ubuntu-latest
