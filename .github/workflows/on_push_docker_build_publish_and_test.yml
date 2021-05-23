@@ -11,24 +11,21 @@ jobs:
           ls -la
       - name: Checkout marduk
         uses: actions/checkout@v2
-      - name: Post-marduk checkout pwd + ls - la
+        with:
+          path: ./marduk
+      - name: Post-marduk checkout pwd + ls -la
         run: |
           pwd
           ls -la
       - name: Checkout baldur
         uses: actions/checkout@v2
         with:
-          repository: "raegancbarker/baldur"
-          ref: "example-docker-compose-intermediate"
+          repository: raegancbarker/baldur
+          ref: example-docker-compose-intermediate
           token: ${{ secrets.GH_TOKEN }}
-      - name: Post-baldur checkout pwd + ls - la
+          path: ./baldur
+      - name: Post-baldur checkout pwd + ls -la
         run: |
-          pwd
-          ls -la
-          cd ..
-          pwd
-          ls -la
-          cd ..
           pwd
           ls -la
 
