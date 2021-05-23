@@ -17,6 +17,9 @@ jobs:
         run: |
           pwd
           ls -la
+          cd marduk
+          ls -la
+          cd ..
       - name: Checkout baldur
         uses: actions/checkout@v2
         with:
@@ -28,6 +31,9 @@ jobs:
         run: |
           pwd
           ls -la
+          cd baldur
+          ls - la
+          cd ..
 
 
 
