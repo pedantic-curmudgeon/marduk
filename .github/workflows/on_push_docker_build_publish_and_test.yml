@@ -68,64 +68,7 @@ jobs:
             auto_tests.xml
 
 
-
-
-
-
-
-# name: Test
-# on: [push]
-# jobs:
-#   check_stuff:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Clean pwd + ls -la
-#         run: |
-#           pwd
-#           ls -la
-#       - name: Checkout marduk
-#         uses: actions/checkout@v2
-#         with:
-#           path: ./marduk
-#       - name: Post-marduk checkout pwd + ls -la
-#         run: |
-#           pwd
-#           ls -la
-#           cd marduk
-#           pwd
-#           ls -la
-#           cd ..
-#       - name: Checkout baldur
-#         uses: actions/checkout@v2
-#         with:
-#           repository: raegancbarker/baldur
-#           ref: example-docker-compose-intermediate
-#           token: ${{ secrets.GH_TOKEN }}
-#           path: ./baldur
-#       - name: Post-baldur checkout pwd + ls -la
-#         run: |
-#           pwd
-#           ls -la
-#           cd baldur
-#           pwd
-#           ls -la
-#           cd ..
-#       - name: Echo paths
-#         run: |
-#           echo $GITHUB_WORKSPACE
-#       - name: Reprint working directory
-#         run: |
-#           pwd
-
-
-# # These should be used in the docker-compose file:
-# # GITHUB_WORKSPACE/marduk/docker/docker-compose-test.yml
-# # GITHUB_WORKSPACE/baldur/liquibase_changelog.sql
-
-
-# # Notes:
-# # GITHUB_WORKSPACE = /home/runner/work/marduk/marduk
-# # /home/runner/work/marduk/marduk/marduk
-# # /docker/docker-compose-test.yml
-# # /home/runner/work/marduk/marduk/baldur
-# # - /liquibase_changelog.sql
+# Notes:
+# - GITHUB_WORKSPACE = /home/runner/work/marduk/marduk
+# - Determined GITHUB_WORKSPACE path via `echo $GITHUB_WORKSPACE`
+# - Determined full repo paths via `pwd`, `ls -la`, and `cd`
