@@ -1,5 +1,5 @@
 # Start from Python 3.8.2 base image.
-FROM python:3.8.2-alpine
+FROM python:3.8.2-slim
 
 # Set working directory.
 WORKDIR /app/marduk
