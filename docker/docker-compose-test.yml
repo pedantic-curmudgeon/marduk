@@ -55,6 +55,7 @@ services:
                 ls -la;
                 sleep 5; \
                 done
+            echo "Liquibase completed..."
             python3 /app/${REPO_NAME}/pytests/runner.py
 
 volumes:
