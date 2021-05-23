@@ -36,8 +36,17 @@ jobs:
           pwd
           ls -la
           cd ..
+      - name: Echo paths
+        run: |
+          echo $GITHUB_WORKSPACE
+      - name: Reprint working directory
+        run: |
+          pwd
 
-# /home/runner/work/marduk/marduk
+# /home/runner/work/marduk/marduk/marduk
+# /docker/docker-compose-test.yml
+# /home/runner/work/marduk/marduk/baldur
+# - /liquibase_changelog.sql
 
 
   # push_image_to_docker_hub:
