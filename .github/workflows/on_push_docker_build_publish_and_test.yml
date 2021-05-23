@@ -27,10 +27,10 @@ jobs:
           ls -la
           cd ..
           pwd
-          ls - la
+          ls -la
           cd ..
           pwd
-          ls - la
+          ls -la
 
 
 
