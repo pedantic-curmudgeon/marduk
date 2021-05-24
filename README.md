@@ -8,6 +8,9 @@ DockerHub, Docker Compose, and GitHub Actions functionality.
 When a push is made to the repo:
 1. A Dockerfile containing the repo code is built and the image is
 published to DockerHub.
+1. A separate repository, `baldur`, is cloned to obtain its
+`liquibase_changelog.sql` file which is used to update the test database
+when the Docker Compose file is executed.
 1. A Docker Compose file which uses the newly-published image with a
 standard [MariaDB Docker image](https://hub.docker.com/_/mariadb) and
 a standard [Liquibase Docker image](https://hub.docker.com/r/liquibase/liquibase)
@@ -73,6 +76,7 @@ Test runner to execute tests via `pytest`.
 A custom workflow which performs the following actions on any `push`:
 1. Builds the `marduk` Dockerfile
 1. Publishes the image to DockerHub
+1. Checks out the `baldur` repo to get the `liquibase_changelog.sql` file
 1. Executes the tests using a Docker Compose file
 1. Uploads the `auto_tests.xml` test results as an artifact
 1. Publishes the `auto_tests.xml` test results to the workflow
