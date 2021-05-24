@@ -50,8 +50,8 @@ services:
         command:
         - |
             until [ -f /app/docker_volume/liquibase.complete ]; \
-                do echo "Waiting for Liquibase to complete...";
-                ls -la;
+                do echo "Waiting for Liquibase to complete..."; \
+                ls -la; \
                 sleep 5; \
                 done
             echo "Liquibase completed..."
