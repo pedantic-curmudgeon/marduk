@@ -8,8 +8,8 @@ DockerHub, Docker Compose, and GitHub Actions functionality.
 When a push is made to the repo:
 1. A Dockerfile containing the repo code is built and the image is
 published to DockerHub.
-1. A Docker Compose file which uses the newly-published image along with
-a standard [MariaDB Docker image](https://hub.docker.com/_/mariadb) and
+1. A Docker Compose file which uses the newly-published image with a
+standard [MariaDB Docker image](https://hub.docker.com/_/mariadb) and
 a standard [Liquibase Docker image](https://hub.docker.com/r/liquibase/liquibase)
 is then run.
 1. On startup, the `Liquibase` container attempts to run `liquibase update`
