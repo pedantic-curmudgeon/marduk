@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Get GitHub Environment
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Check Out Current Repo (Head) # marduk
+      - name: Check Out Current Repo (${{ env.GITHUB_REF_SLUG }}) # marduk
         uses: actions/checkout@v2
         with:
           path: ./marduk
