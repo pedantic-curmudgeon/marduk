@@ -6,11 +6,14 @@ of CI/CD-related image build, publish, and test workflows using Docker,
 DockerHub, Docker Compose, and GitHub Actions functionality.
 
 When a push is made to the repo:
-1. A Dockerfile containing the repo code is built and the image is
-published to DockerHub.
+1. A Dockerfile containing the `marduk` repo code is built and the image
+is published to DockerHub.
 1. A separate repository, `baldur`, is cloned to obtain its
 `liquibase_changelog.sql` file which is used to update the test database
-when the Docker Compose file is executed.
+when the Docker Compose file is executed. (If the branch in `marduk`
+from which the GitHub workflow was initiated exists in `baldur`, that
+branch will be cloned from `baldur`. Otherwise, the `dev` branch will be
+cloned.)
 1. A Docker Compose file which uses the newly-published image with a
 standard [MariaDB Docker image](https://hub.docker.com/_/mariadb) and
 a standard [Liquibase Docker image](https://hub.docker.com/r/liquibase/liquibase)
