@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: ./marduk
-      - name: Check Out Liquibase Repo (Ref) # baldur
+      - name: Check Out Liquibase Repo (${{ env.GITHUB_REF_SLUG }}) # baldur
         id: dependency
         uses: actions/checkout@v2
         with:
@@ -41,7 +41,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           path: ./baldur
         continue-on-error: true
-      - name: Check Out Liquibase Repo (Dev) # baldur
+      - name: Check Out Liquibase Repo (dev) # baldur
         uses: actions/checkout@v2
         if: steps.dependency.outcome != 'success'
         with:
