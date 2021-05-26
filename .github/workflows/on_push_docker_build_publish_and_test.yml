@@ -25,57 +25,58 @@ jobs:
     name: Run Tests in Docker Compose
     needs: push_image_to_docker_hub
     runs-on: ubuntu-latest
-      - uses: rlespinasse/github-slug-action@v3.x
-      # - name: Check Out Current Repo (Head) # marduk
-      #   uses: actions/checkout@v2
-      #   with:
-      #     path: ./marduk
-      # - name: Check Out Liquibase Repo (Ref) # baldur
-      #   id: dependency
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: raegancbarker/baldur
-      #     ref: ${{ env.GITHUB_REF_SLUG }}
-      #     token: ${{ secrets.GH_TOKEN }}
-      #     path: ./baldur
-      #   continue-on-error: true
-      # - name: Check Out Liquibase Repo (Dev) # baldur
-      #   uses: actions/checkout@v2
-      #   if: steps.dependency.outcome != 'success'
-      #   with:
-      #     repository: raegancbarker/baldur
-      #     ref: dev
-      #     token: ${{ secrets.GH_TOKEN }}
-      #     path: ./baldur
-      # - name: Log In to DockerHub
-      #   uses: docker/login-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      # - name: Run Docker Compose
-      #   run: |
-      #     docker-compose -f $GITHUB_WORKSPACE/marduk/docker/docker-compose-test.yml up -d
-      # - name: Wait for Tests to Complete
-      #   run: >
-      #     while [ `docker inspect --format '{{json .State.Running}}' repo_container` = "true" ];
-      #     do echo "Waiting for repo_container to exit...";
-      #     docker ps;
-      #     sleep 5;
-      #     done
-      # - name: Copy Test Results from Container to Host
-      #   run: |
-      #     docker cp repo_container:/app/marduk/auto_tests.xml .
-      # - name: Upload Test Results
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: test_results
-      #     path: auto_tests.xml
-      # - name: Publish Test Results from Host to GitHub Workflow
-      #   uses: EnricoMi/publish-unit-test-result-action@v1
-      #   if: always()
-      #   with:
-      #     files: |
-      #       auto_tests.xml
+      - name: Check Out Current Repo (Head) # marduk
+        uses: actions/checkout@v2
+        with:
+          path: ./marduk
+      - name: Get GitHub Environment
+        uses: rlespinasse/github-slug-action@v3.x
+      - name: Check Out Liquibase Repo (Ref) # baldur
+        id: dependency
+        uses: actions/checkout@v2
+        with:
+          repository: raegancbarker/baldur
+          ref: ${{ env.GITHUB_REF_SLUG }}
+          token: ${{ secrets.GH_TOKEN }}
+          path: ./baldur
+        continue-on-error: true
+      - name: Check Out Liquibase Repo (Dev) # baldur
+        uses: actions/checkout@v2
+        if: steps.dependency.outcome != 'success'
+        with:
+          repository: raegancbarker/baldur
+          ref: dev
+          token: ${{ secrets.GH_TOKEN }}
+          path: ./baldur
+      - name: Log In to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Run Docker Compose
+        run: |
+          docker-compose -f $GITHUB_WORKSPACE/marduk/docker/docker-compose-test.yml up -d
+      - name: Wait for Tests to Complete
+        run: >
+          while [ `docker inspect --format '{{json .State.Running}}' repo_container` = "true" ];
+          do echo "Waiting for repo_container to exit...";
+          docker ps;
+          sleep 5;
+          done
+      - name: Copy Test Results from Container to Host
+        run: |
+          docker cp repo_container:/app/marduk/auto_tests.xml .
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test_results
+          path: auto_tests.xml
+      - name: Publish Test Results from Host to GitHub Workflow
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: |
+            auto_tests.xml
 
       #- name: Get GitHub Environment
 
