@@ -25,7 +25,7 @@ jobs:
     name: Run Tests in Docker Compose
     needs: push_image_to_docker_hub
     runs-on: ubuntu-latest
-        uses: rlespinasse/github-slug-action@v3.x
+      - uses: rlespinasse/github-slug-action@v3.x
       - name: Check Out Current Repo (Head) # marduk
         uses: actions/checkout@v2
         with:
@@ -85,15 +85,15 @@ jobs:
 # - Determined full repo paths via `pwd`, `ls -la`, and `cd`
 
 
-    # steps:
-    #   - name: Check Out Current Repo # marduk
-    #     uses: actions/checkout@v2
-    #     with:
-    #       path: ./marduk
-    #   - name: Check Out Liquibase Repo # baldur
-    #     uses: actions/checkout@v2
-    #     with:
-    #       repository: raegancbarker/baldur
-    #       ref: example-docker-compose-intermediate
-    #       token: ${{ secrets.GH_TOKEN }}
-    #       path: ./baldur
+# steps:
+#   - name: Check Out Current Repo # marduk
+#     uses: actions/checkout@v2
+#     with:
+#       path: ./marduk
+#   - name: Check Out Liquibase Repo # baldur
+#     uses: actions/checkout@v2
+#     with:
+#       repository: raegancbarker/baldur
+#       ref: example-docker-compose-intermediate
+#       token: ${{ secrets.GH_TOKEN }}
+#       path: ./baldur
