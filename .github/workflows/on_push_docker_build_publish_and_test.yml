@@ -25,7 +25,7 @@ jobs:
     name: Run Tests in Docker Compose
     needs: push_image_to_docker_hub
     runs-on: ubuntu-latest
-      - name: Get GitHub Environment
+      #- name: Get GitHub Environment
         uses: rlespinasse/github-slug-action@v3.x
       - name: Check Out Current Repo (Head) # marduk
         uses: actions/checkout@v2
