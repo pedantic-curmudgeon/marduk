@@ -63,9 +63,13 @@ services:
 volumes:
     compose_volume:
 
+
 # NOTE: Be sure to remove the volumes with the --volumes flag. Otherwise,
 # the liquibase complete file will still exist and the content repo tests
 # will execute before the Liquibase updates have actually occurred.
+
+# Also: Be sure to include the --build flag for local executions, or else
+# the local repo's image will not be rebuilt on subsequent runs.
 
 # docker-compose -f docker-compose-test.yml --env-file .env.test.local up/down --volumes
 # docker-compose -f docker-compose-test.yml --env-file .env.test.server up/down --volumes
