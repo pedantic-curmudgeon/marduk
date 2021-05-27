@@ -18,7 +18,7 @@ services:
         depends_on:
             - "db"
         volumes:
-            - "${GITHUB_WORKSPACE}/baldur:/liquibase/changelog"
+            - "${CHANGELOG_DIRECTORY}:/liquibase/changelog"
             - "compose_volume:/liquibase"
         entrypoint: ["/bin/sh","-c"]
         # Write completion file once Liquibase update executes successfully.
@@ -62,3 +62,7 @@ services:
 
 volumes:
     compose_volume:
+
+
+# docker-compose -f docker-compose-test.yml --env-file .env.test.local up/down
+# docker-compose -f docker-compose-test.yml --env-file .env.test.server up/down
