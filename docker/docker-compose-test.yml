@@ -36,9 +36,12 @@ services:
             ls -la
             pwd
             exit
-    # Run repo tests.
+    # Build new repo image and run tests.
     repo:
-        image: "raeganbarker/${REPO_NAME}:${TAG}"
+        image: test/${REPO_NAME}:latest
+        build:
+            context: ../
+            dockerfile: docker/Dockerfile.test
         container_name: "repo_container"
         restart: "on-failure"
         depends_on:
