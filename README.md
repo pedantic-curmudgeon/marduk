@@ -37,7 +37,7 @@ on the workflow execution `Summary` and in the `Unit Test Results` job.
 
 When a pull request is merged to the repo:
 1. The `Dockerfile.test` image is built.
-1. The image is publised to Docker Hub.
+1. The image is published to Docker Hub.
 
 
 <a id="folders-link"></a>
@@ -97,7 +97,7 @@ A custom workflow which performs the following actions on any `push`:
 1. Publishes the `auto_tests.xml` test results to the workflow
 
 ### [.github/workflows/on_pr_merge_docker_image_build_and_publish.yml](.github/workflows/on_pr_merge_docker_image_build_and_publish.yml)
-A custom workflow which performs the following actions on any pull-request
+A custom workflow which performs the following actions on any pull request
 `merge`:
 1. Checks out the `marduk` repo
 1. Builds the `Dockerfile.test` image
