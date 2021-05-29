@@ -28,7 +28,7 @@ services:
                 --url="jdbc:mariadb://db_container:3306/${DB_NAME}" \
                 --username="${DB_USER}" \
                 --password="${DB_PASSWORD}" \
-                --changeLogFile="/changelog/liquibase_changelog.sql" \
+                --changeLogFile="/changelog/${CHANGELOG_NAME}" \
                 update; \
                 do sleep 5; \
                 done
