@@ -5,21 +5,22 @@
 1. [Scope](#scope-link)
 1. [Folders](#folders-link)
 1. [Files](#files-link)
+1. [Local Execution](#local-execution-link)
 
 
 <a id="scope-link"></a>
-## Scope
+## 1. Scope
 A basic repo with a custom `functions` module which includes examples
 of CI/CD-related image build, publish, and test workflows using Docker,
 Docker Compose, and GitHub Actions functionality.
 
 When a push is made to the repo:
-1. A separate repository, `baldur`, is cloned to obtain its
-`liquibase_changelog.sql` file which is used to update the test database
-when the Docker Compose file is executed. (If the branch in `marduk`
-from which the GitHub workflow was initiated exists in `baldur`, that
-branch will be cloned from `baldur`. Otherwise, the `dev` branch will be
-cloned.)
+1. A separate repository, [baldur](https://github.com/raegancbarker/baldur),
+is cloned to obtain its `liquibase_changelog.sql` file which is used to
+update the test database when the Docker Compose file is executed.
+(If the branch in `marduk` from which the GitHub workflow was initiated
+exists in `baldur`, that branch will be cloned from `baldur`. Otherwise,
+the `dev` branch will be cloned.)
 1. A Docker Compose file builds the `marduk` image and starts it as a
 container along with a standard
 [MariaDB Docker image](https://hub.docker.com/_/mariadb) and a standard
@@ -41,7 +42,7 @@ When a pull request is merged to the repo:
 
 
 <a id="folders-link"></a>
-## Folders
+## 2. Folders
 
 ### [database](database)
 SQLAlchemy database connection engines.
@@ -49,18 +50,18 @@ SQLAlchemy database connection engines.
 ### [docker](docker)
 Dockerfile, Docker Compose file, and local/server .env files.
 
-### [.github/workflows](.github/workflows)
-GitHub actions workflows.
-
 ### [functions](functions)
 Custom module `marduk.functions`.
 
 ### [pytests](pytests)
 Tests and test runner for `marduk.functions`.
 
+### [.github/workflows](.github/workflows)
+GitHub actions workflows.
+
 
 <a id="files-link"></a>
-## Files
+## 3. Files
 
 ### [database/engines.py](database/engines.py)
 Database engines with credentials to the test database used.
@@ -81,7 +82,8 @@ to interact and the tests to run.
 Environment variables used by the Docker Compose file for local executions.
 
 ### [docker/.env.test.server](docker/.env.test.server)
-Environment variables used by the Docker Compose file for CI/CD server executions.
+Environment variables used by the Docker Compose file for CI/CD server
+executions.
 
 ### [pytests/test_functions.py](pytests/test_functions.py)
 Test class with test scenarios for the `marduk.functions` module.
@@ -105,3 +107,27 @@ A custom workflow which performs the following actions on any pull request
 
 ### [requirements.txt](requirements.txt)
 Additional Python libraries required by `marduk`.
+
+
+<a id="local-execution-link"></a>
+## 4. Local Execution
+To execute the tests locally:
+1. Install [Docker](https://docs.docker.com/get-docker/) and
+[Docker Compose](https://docs.docker.com/compose/install/).
+1. Git clone `marduk` and `baldur` and check out the appropriate
+branches.
+1. Update `CHANGELOG_DIRECTORY` in `.env.test.local` in `marduk` to point
+to the `baldur` directory.
+1. Run the Docker Compose file from a terminal session in `/marduk/docker`.
+    ```
+    docker-compose -f docker-compose-test.yml --env-file .env.test.local up --build
+    ```
+1. The terminal will display logging information from all three of the
+running containers.
+1. Once the test executions have completed, press `Ctrl + C` in the terminal
+to stop the Docker Compose stack.
+1. Remove the Docker Compose stack, including the containers, network,
+and volume, from a terminal session in `/marduk/docker`.
+    ```
+    docker-compose -f docker-compose-test.yml --env-file .env.test.local down --volumes
+    ```
