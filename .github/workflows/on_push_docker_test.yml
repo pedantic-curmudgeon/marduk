@@ -10,7 +10,7 @@ jobs:
       - name: Check Out Current Repo (${{ env.GITHUB_REF_SLUG }}) # marduk
         uses: actions/checkout@v2
         with:
-          path: ./marduk
+          path: ./${{ env.GITHUB_REPOSITORY_NAME_PART }}
       - name: Check Out Liquibase Repo (${{ env.GITHUB_REF_SLUG }}) # baldur
         id: dependency
         uses: actions/checkout@v2
@@ -42,7 +42,7 @@ jobs:
         #   up
         #   -d
         run: |
-          cd $GITHUB_WORKSPACE/marduk/docker
+          cd $GITHUB_WORKSPACE/${{ env.GITHUB_REPOSITORY_NAME_PART }}/docker
           docker-compose -f docker-compose-test.yml --env-file .env.test.server up -d
       - name: Wait for Tests to Complete
         run: >
@@ -53,7 +53,7 @@ jobs:
           done
       - name: Copy Test Results from Container to Host
         run: |
-          docker cp repo_container:/app/marduk/auto_tests.xml .
+          docker cp repo_container:/app/${{ env.GITHUB_REPOSITORY_NAME_PART }}/auto_tests.xml .
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
         with:
