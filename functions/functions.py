@@ -38,6 +38,7 @@ def db_alive(engine: Engine,
     defined by the wait increment up until the wait max.
 
     Args:
+        engine: SQL Alchemy database engine.
         wait_max: Maximum wait time in seconds.
         wait_increment: Time between query attempts in seconds.
 
@@ -53,7 +54,6 @@ def db_alive(engine: Engine,
     # Check for database response.
     while not db_alive:
         if wait_time <= wait_max:
-            print(wait_time)
             try:
                 results = engine.execute(sql)
                 db_alive = True
@@ -61,6 +61,4 @@ def db_alive(engine: Engine,
                 time.sleep(wait_increment)
                 wait_time += wait_increment
 
-    print('results:', results.fetchall())
-    print('db_alive:', db_alive)
     return db_alive
