@@ -33,9 +33,6 @@ services:
                 do sleep 5; \
                 done
             touch liquibase.complete
-            ls -la
-            pwd
-            exit
     # Build new repo image and run tests.
     repo:
         image: test/${REPO_NAME}:latest
@@ -54,10 +51,8 @@ services:
         - |
             until [ -f /app/docker_volume/liquibase.complete ]; \
                 do echo "Waiting for Liquibase to complete..."; \
-                ls -la; \
                 sleep 5; \
                 done
-            echo "Liquibase completed..."
             python3 /app/${REPO_NAME}/pytests/runner.py
 
 volumes:
