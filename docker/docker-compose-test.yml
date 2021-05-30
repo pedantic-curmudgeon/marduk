@@ -3,7 +3,7 @@ services:
     # Start test database.
     db:
         image: "mariadb:latest"
-        container_name: "db_container"
+        container_name: "${DB_CONTAINER_NAME}"
         ports:
             - "3306:3306"
         restart: "on-failure"
@@ -13,7 +13,7 @@ services:
     # Run Liquibase change log against test database.
     liquibase:
         image: "liquibase/liquibase:latest"
-        container_name: "liquibase_container"
+        container_name: "${LIQUIBASE_CONTAINER_NAME}"
         restart: "on-failure"
         depends_on:
             - "db"
@@ -39,7 +39,7 @@ services:
         build:
             context: ../
             dockerfile: docker/Dockerfile.test
-        container_name: "repo_container"
+        container_name: "${REPO_CONTAINER_NAME}"
         restart: "on-failure"
         depends_on:
             - "liquibase"
