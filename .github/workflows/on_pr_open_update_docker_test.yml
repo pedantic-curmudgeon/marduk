@@ -1,5 +1,12 @@
 name: Test Docker Image With Docker Compose
-on: [push]
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - dev
 jobs:
   run_tests_in_docker_compose:
     name: Run Tests in Docker Compose
@@ -7,26 +14,26 @@ jobs:
     steps:
       - name: Get GitHub Environment
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Check Out Current Repo (${{ env.GITHUB_REF_SLUG }}) # marduk
+      - name: Check Out Current Repo (${{ env.GITHUB_HEAD_REF_SLUG }}) # marduk
         uses: actions/checkout@v2
         with:
           path: ./${{ env.GITHUB_REPOSITORY_NAME_PART }}
-      - name: Check Out Liquibase Repo (${{ env.GITHUB_REF_SLUG }}) # baldur
+      - name: Check Out Liquibase Repo (${{ env.GITHUB_HEAD_REF_SLUG }}) # baldur
         id: dependency
         uses: actions/checkout@v2
         with:
           repository: raegancbarker/baldur
-          ref: ${{ env.GITHUB_REF_SLUG }}
+          ref: ${{ env.GITHUB_HEAD_REF_SLUG }}
           token: ${{ secrets.GH_TOKEN }}
           path: ./baldur
         continue-on-error: true
-      - name: Check Out Liquibase Repo (dev) # baldur
+      - name: Check Out Liquibase Repo (${{ env.GITHUB_BASE_REF_SLUG }}) # baldur
         uses: actions/checkout@v2
         if: steps.dependency.outcome != 'success'
         # if: steps.dependency.exit_code != 0
         with:
           repository: raegancbarker/baldur
-          ref: dev
+          ref: ${{ env.GITHUB_BASE_REF_SLUG }}
           token: ${{ secrets.GH_TOKEN }}
           path: ./baldur
       - name: Log In to DockerHub
@@ -35,12 +42,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Run Docker Compose
-        # run: >
-        #   docker-compose
-        #   -f $GITHUB_WORKSPACE/marduk/docker/docker-compose-test.yml
-        #   --env-file $GITHUB_WORKSPACE/marduk/docker/.env.test.server
-        #   up
-        #   -d
         run: |
           cd $GITHUB_WORKSPACE/${{ env.GITHUB_REPOSITORY_NAME_PART }}/docker
           docker-compose -f docker-compose-test.yml --env-file .env.test.server up -d
