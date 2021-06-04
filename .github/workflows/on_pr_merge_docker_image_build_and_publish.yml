@@ -12,6 +12,8 @@ jobs:
     name: Push Docker Image to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Get GitHub Environment
+        uses: rlespinasse/github-slug-action@v3.x
       - name: Check Out Current Repo # marduk
         uses: actions/checkout@v2
       - name: Set Up Docker BuildX
@@ -26,7 +28,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: raeganbarker/marduk:dev
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.GITHUB_REPOSITORY_NAME_PART }}:dev
           file: docker/Dockerfile.test
 
 

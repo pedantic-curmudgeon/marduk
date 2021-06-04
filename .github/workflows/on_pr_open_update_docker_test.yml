@@ -22,7 +22,7 @@ jobs:
         id: dependency
         uses: actions/checkout@v2
         with:
-          repository: raegancbarker/baldur
+          repository: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/baldur
           ref: ${{ env.GITHUB_HEAD_REF_SLUG }}
           token: ${{ secrets.GH_TOKEN }}
           path: ./baldur
@@ -32,7 +32,7 @@ jobs:
         if: steps.dependency.outcome != 'success'
         # if: steps.dependency.exit_code != 0
         with:
-          repository: raegancbarker/baldur
+          repository: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/baldur
           ref: ${{ env.GITHUB_BASE_REF_SLUG }}
           token: ${{ secrets.GH_TOKEN }}
           path: ./baldur

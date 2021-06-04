@@ -25,7 +25,7 @@ services:
         command:
         - |
             until liquibase \
-                --url="jdbc:mariadb://db_container:3306/${DB_NAME}" \
+                --url="jdbc:mariadb://${DB_CONTAINER_NAME}:3306/${DB_NAME}" \
                 --username="${DB_USER}" \
                 --password="${DB_PASSWORD}" \
                 --changeLogFile="/changelog/${CHANGELOG_NAME}" \
