@@ -163,8 +163,8 @@ for the new branch in both repos.
 in `marduk`.
 1. Open a pull request in `marduk` using `dev` as the base branch and
 the new branch as the `head` branch.
-1. The pull request will include a link to the to-be-completed GitHub
-Actions workflow which was initiated by opening a pull request to the
+1. The pull request will include links to the to-be-completed GitHub
+Actions workflows which were initiated by opening a pull request to the
 `dev` branch.
 1. Navigate to the `Checks` tab in the pull request or the `Actions` tab
 in the `marduk` repo.
