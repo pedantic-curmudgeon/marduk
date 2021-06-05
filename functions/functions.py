@@ -1,9 +1,10 @@
-"""Custom functions."""
+"""Custom string and database functions."""
 
 import time
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.exc import OperationalError
 
+# Define string functions.
 
 def stringify_list(list_: list,
                    quoted: bool = False
@@ -27,6 +28,8 @@ def stringify_list(list_: list,
 
     return string_
 
+
+# Define database functions.
 
 def db_alive(engine: Engine,
              wait_max: int = 60,
