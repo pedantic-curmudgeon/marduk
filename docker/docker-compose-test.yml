@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+    # Start test database.
+    db:
+        image: "mariadb:latest"
+        container_name: "${DB_CONTAINER_NAME}"
+        ports:
+            - "3306:3306"
+        restart: "on-failure"
+        environment:
+            MYSQL_DATABASE: "${DB_NAME}"
+            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+    # Run Liquibase change log against test database.
+    liquibase:
+        image: "liquibase/liquibase:latest"
+        container_name: "${LIQUIBASE_CONTAINER_NAME}"
+        restart: "on-failure"
+        depends_on:
+            - "db"
+        volumes:
+            - "${CHANGELOG_DIRECTORY}:/liquibase/changelog"
+            - "compose_volume:/liquibase"
+        entrypoint: ["/bin/sh","-c"]
+        # Write completion file once Liquibase update executes successfully.
+        command:
+        - |
+            until liquibase \
+                --url="jdbc:mariadb://${DB_CONTAINER_NAME}:3306/${DB_NAME}" \
+                --username="${DB_USER}" \
+                --password="${DB_PASSWORD}" \
+                --changeLogFile="/changelog/${CHANGELOG_NAME}" \
+                update; \
+                do sleep 5; \
+                done
+            touch liquibase.complete
+    # Build new repo image and run tests.
+    repo:
+        image: test/${REPO_NAME}:latest
+        build:
+            context: ../
+            dockerfile: docker/Dockerfile.test
+        container_name: "${REPO_CONTAINER_NAME}"
+        restart: "on-failure"
+        depends_on:
+            - "liquibase"
+        volumes:
+            - "compose_volume:/app/docker_volume"
+        entrypoint: ["/bin/sh","-c"]
+        # Execute pytests once Liquibase update has executed succesfully.
+        command:
+        - |
+            until [ -f /app/docker_volume/liquibase.complete ]; \
+                do echo "Waiting for Liquibase to complete..."; \
+                sleep 5; \
+                done
+            python3 /app/${REPO_NAME}/pytests/runner.py
+
+volumes:
+    compose_volume:
