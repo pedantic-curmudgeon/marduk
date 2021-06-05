@@ -6,6 +6,7 @@
 1. [Folders](#folders-link)
 1. [Files](#files-link)
 1. [Local Execution](#local-execution-link)
+1. [Usage](#fork-execution-link)
 
 
 <a id="scope-link"></a>
@@ -134,3 +135,44 @@ and volume, from a terminal session in `/marduk/docker`.
     ```
     docker-compose -f docker-compose-test.yml --env-file .env.test.local down --volumes
     ```
+
+
+<a id="fork-execution-link"></a>
+
+## 5. Fork Execution
+To fork this repo and execute the CI/CD pipelines:
+1. Create a fork of `marduk`.
+1. Create a fork of `baldur`.
+1. Navigate to `Settings > Secrets` in `marduk` and create the following
+secrets:
+    - `DOCKER_PASSWORD`: Docker Hub token.
+    - `DOCKER_USERNAME`: Docker Hub user name.
+    - `GH_TOKEN`: GitHub personal access token.
+1. Navigate to `Settings > Branches` in `marduk` and add a new branch
+protection rule.
+    - `Branch pattern name`: `dev`
+    - `Require status checks to pass before merging`: `[x]`
+    - `Status checks that are required`:
+        - `Run Tests in Docker Compose`
+        - `Unit Test Results`
+    - `Include Administrators`: `[x]`
+1. In Docker Hub, create a repo named `marduk`.
+1. Branch off of `dev` in both `marduk` and `baldur`, using the same name
+for the new branch in both repos.
+1. Make an update (such as adding a new text file) to the new branch
+in `marduk`.
+1. Open a pull request in `marduk` using `dev` as the base branch and
+the new branch as the `head` branch.
+1. The pull request will include a link to the to-be-completed GitHub
+Actions workflow which was initiated by opening a pull request to the
+`dev` branch.
+1. Navigate to the `Actions` tab in the `marduk` repo.
+1. The `Test Docker Image With Docker Compose` workflow will now be running.
+1. Once the workflow completes successfully, the pull request will be
+eligible to be merged.
+1. Merge the pull request.
+1. Navigate to the `Actions` tab in the `marduk` repo.
+1. The `Build & Publish Docker Image` workflow will now be running.
+1. Once the workflow completes successfully, refresh the `marduk`
+repo in Docker Hub.
+1. A new `marduk:dev` image will now be available.
