@@ -151,11 +151,11 @@ secrets:
 1. Navigate to `Settings > Branches` in `marduk` and add a new branch
 protection rule.
     - Branch pattern name: `dev`
-    - Require status checks to pass before merging: `[x]`
+    - Require status checks to pass before merging: `✓`
     - Status checks that are required:
         - `Run Tests in Docker Compose`
         - `Unit Test Results`
-    - Include Administrators: `[x]`
+    - Include Administrators: `✓`
 1. In Docker Hub, create a repo named `marduk`.
 1. Branch off of `dev` in both `marduk` and `baldur`, using the same name
 for the new branch in both repos.
