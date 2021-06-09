@@ -135,6 +135,11 @@ and volume, from a terminal session in `/marduk/docker`.
     ```
     docker-compose -f docker-compose-test.yml --env-file .env.test.local down --volumes
     ```
+1. After executing locally more than once, dangling Docker images can
+begin to accumulate. Use the following to remove orphaned images:
+    ```
+    docker image prune
+    ```
 
 
 <a id="fork-execution-link"></a>
