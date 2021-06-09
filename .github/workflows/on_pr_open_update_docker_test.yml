@@ -14,11 +14,11 @@ jobs:
     steps:
       - name: Get GitHub Environment
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Check Out Current Repo (${{ env.GITHUB_HEAD_REF_SLUG }}) # marduk
+      - name: Check Out Current Repo (${{ env.GITHUB_HEAD_REF_SLUG }})
         uses: actions/checkout@v2
         with:
           path: ./${{ env.GITHUB_REPOSITORY_NAME_PART }}
-      - name: Check Out Liquibase Repo (${{ env.GITHUB_HEAD_REF_SLUG }}) # baldur
+      - name: Check Out Liquibase Repo (${{ env.GITHUB_HEAD_REF_SLUG }})
         id: dependency
         uses: actions/checkout@v2
         with:
@@ -27,7 +27,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           path: ./baldur
         continue-on-error: true
-      - name: Check Out Liquibase Repo (${{ env.GITHUB_BASE_REF_SLUG }}) # baldur
+      - name: Check Out Liquibase Repo (${{ env.GITHUB_BASE_REF_SLUG }})
         uses: actions/checkout@v2
         if: steps.dependency.outcome != 'success'
         # if: steps.dependency.exit_code != 0
