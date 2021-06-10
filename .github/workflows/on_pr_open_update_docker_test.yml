@@ -45,6 +45,8 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/${{ env.GITHUB_REPOSITORY_NAME_PART }}/docker
           docker-compose -f docker-compose-test.yml --env-file .env.test.server up -d
+        env:
+          ENV_VAR: ${{ secrets.ENV_VAR }}
       - name: Wait for Tests to Complete
         run: >
           while [ `docker inspect --format '{{json .State.Running}}' repo_container` = "true" ];

@@ -54,6 +54,13 @@ services:
                 sleep 5; \
                 done
             python3 /app/${REPO_NAME}/pytests/runner.py
+        environment:
+            ENV_VAR: ${ENV_VAR}
 
 volumes:
     compose_volume:
+
+
+# Terminal:
+# ENV_VAR="abc123def456"
+# export ENV_VAR
