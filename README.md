@@ -12,7 +12,7 @@
 <a id="scope-link"></a>
 ## 1. Scope
 A basic repo with a custom `functions` module which includes examples
-of CI/CD-related image build, publish, and test workflows using Docker,
+of CI/CD-related image test and build and publish workflows using Docker,
 Docker Compose, and GitHub Actions functionality.
 
 When a pull request is opened, updated, or reopened to the `dev` branch:
@@ -50,7 +50,7 @@ When a pull request is merged to the `dev` branch:
 SQLAlchemy database connection engines.
 
 ### [docker](docker)
-Dockerfile, Docker Compose file, and local/server .env files.
+Dockerfile, Docker Compose file, and .env file.
 
 ### [functions](functions)
 Custom module `marduk.functions`.
@@ -116,9 +116,12 @@ To execute the tests locally:
 [Docker Compose](https://docs.docker.com/compose/install/).
 1. Git clone `marduk` and `baldur` to the same parent directory and
 check out the appropriate branches.
-1. Run the Docker Compose file from a terminal session in `/marduk/docker`.
+1. Set the `ENV_VAR` environment variable and run the Docker Compose
+file from a terminal session in `/marduk/docker`.
     ```
-    docker-compose -f docker-compose-test.yml --env-file .env.test up --build
+    $ ENV_VAR="abc123def456"
+    $ export ENV_VAR
+    $ docker-compose -f docker-compose-test.yml --env-file .env.test up --build
     ```
 1. The terminal will display logging information from all three of the
 running containers.
@@ -150,12 +153,12 @@ running containers.
 1. Remove the Docker Compose stack, including the containers, network,
 and volume, from a terminal session in `/marduk/docker`.
     ```
-    docker-compose -f docker-compose-test.yml --env-file .env.test down --volumes
+    $ docker-compose -f docker-compose-test.yml --env-file .env.test down --volumes
     ```
 1. After executing locally more than once, dangling Docker images can
 begin to accumulate. Use the following to remove orphaned images:
     ```
-    docker image prune
+    $ docker image prune
     ```
 
 
