@@ -80,12 +80,8 @@ container, `Liquibase` container,  and `marduk` test Dockerfile
 container alongside a Docker volume and network to allow the containers
 to interact and the tests to run.
 
-### [docker/.env.test.local](docker/.env.test.local)
-Environment variables used by the Docker Compose file for local executions.
-
-### [docker/.env.test.server](docker/.env.test.server)
-Environment variables used by the Docker Compose file for CI/CD server
-executions.
+### [docker/.env.test](docker/.env.test)
+Environment variables used by the Docker Compose file.
 
 ### [pytests/test_functions.py](pytests/test_functions.py)
 Test class with test scenarios for the `marduk.functions` module.
@@ -118,22 +114,43 @@ Additional Python libraries required by `marduk`.
 To execute the tests locally:
 1. Install [Docker](https://docs.docker.com/get-docker/) and
 [Docker Compose](https://docs.docker.com/compose/install/).
-1. Git clone `marduk` and `baldur` and check out the appropriate
-branches.
-1. Update `CHANGELOG_DIRECTORY` in `.env.test.local` in `marduk` to point
-to the `baldur` directory.
+1. Git clone `marduk` and `baldur` to the same parent directory and
+check out the appropriate branches.
 1. Run the Docker Compose file from a terminal session in `/marduk/docker`.
     ```
     docker-compose -f docker-compose-test.yml --env-file .env.test up --build
     ```
 1. The terminal will display logging information from all three of the
 running containers.
-1. Once the test executions have completed, press `Ctrl + C` in the terminal
-to stop the Docker Compose stack.
+    ```
+    Successfully tagged test/marduk:latest
+    Creating db_container ... done
+    Creating liquibase_container ... done
+    Creating repo_container      ... done
+    Attaching to db_container, liquibase_container, repo_container
+    ```
+1. Once the test executions have completed as shown below, press
+`Ctrl + C` in the terminal to stop the Docker Compose stack.
+    ```
+    liquibase_container exited with code 0
+    repo_container | ============================= test session starts ==============================
+    repo_container | platform linux -- Python 3.8.2, pytest-6.2.3, py-1.10.0, pluggy-0.13.1 -- /usr/local/bin/python3
+    repo_container | cachedir: .pytest_cache
+    repo_container | rootdir: /app/marduk
+    repo_container | collecting ... collected 4 items
+    repo_container |
+    repo_container | pytests/test_functions.py::TestFunctions::test_stringify_list_001 PASSED [ 25%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_stringify_list_002 PASSED [ 50%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_query_db_001 PASSED       [ 75%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_environment_variable_001 PASSED [100%]
+    repo_container |
+    repo_container | ---------------- generated xml file: /app/marduk/auto_tests.xml ----------------
+    repo_container | ============================== 4 passed in 0.03s ===============================
+    ```
 1. Remove the Docker Compose stack, including the containers, network,
 and volume, from a terminal session in `/marduk/docker`.
     ```
-    docker-compose -f docker-compose-test.yml --env-file .env.test.local down --volumes
+    docker-compose -f docker-compose-test.yml --env-file .env.test down --volumes
     ```
 1. After executing locally more than once, dangling Docker images can
 begin to accumulate. Use the following to remove orphaned images:
