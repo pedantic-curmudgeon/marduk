@@ -151,8 +151,9 @@ To fork this repo and execute the CI/CD pipelines:
 1. Navigate to `Settings > Secrets` in `marduk` and create the following
 secrets:
     - `DOCKER_PASSWORD`: Docker Hub token.
-    - `DOCKER_USERNAME`: Docker Hub user name.
+    - `DOCKER_USERNAME`: Docker Hub username.
     - `GH_TOKEN`: GitHub personal access token.
+    - `ENV_VAR`: abc123def456
 1. Navigate to `Settings > Branches` in `marduk` and add a new branch
 protection rule.
     - Branch pattern name: `dev`
