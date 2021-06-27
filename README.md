@@ -124,7 +124,7 @@ branches.
 to the `baldur` directory.
 1. Run the Docker Compose file from a terminal session in `/marduk/docker`.
     ```
-    docker-compose -f docker-compose-test.yml --env-file .env.test.local up --build
+    docker-compose -f docker-compose-test.yml --env-file .env.test up --build
     ```
 1. The terminal will display logging information from all three of the
 running containers.

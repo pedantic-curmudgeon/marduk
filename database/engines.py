@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 # Get database environment variables.
 this_folder = Path(__file__).parent
 root_folder = this_folder.parent
-env_file = root_folder / 'docker' / '.env.test.local'
+env_file = root_folder / 'docker' / '.env.test'
 env_dict = dotenv_values(env_file)
 db_name = env_dict['DB_NAME']
 db_user = env_dict['DB_USER']
@@ -19,7 +19,7 @@ db_container = env_dict['DB_CONTAINER_NAME']
 compose_db_cfg = {
     'user': db_user,
     'password': db_password,
-    'server': db_container, # This corresponds to the name of the DB container in the compose file.
+    'server': db_container, # The name of the DB container in the compose file.
     'port': '3306',
     'db': db_name,
     'charset': 'utf8mb4'
