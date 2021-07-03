@@ -7,17 +7,21 @@ on:
       - reopened
     branches:
       - dev
+
 jobs:
   run_tests_in_docker_compose:
     name: Run Tests in Docker Compose
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Get GitHub Environment
         uses: rlespinasse/github-slug-action@v3.x
+
       - name: Check Out Current Repo (${{ env.GITHUB_HEAD_REF_SLUG }})
         uses: actions/checkout@v2
         with:
-          path: ./${{ env.GITHUB_REPOSITORY_NAME_PART }}
+          path: ${{ env.GITHUB_REPOSITORY_NAME_PART }}
+
       - name: Check Out Liquibase Repo (${{ env.GITHUB_HEAD_REF_SLUG }})
         id: dependency
         uses: actions/checkout@v2
@@ -25,8 +29,9 @@ jobs:
           repository: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/baldur
           ref: ${{ env.GITHUB_HEAD_REF_SLUG }}
           token: ${{ secrets.GH_TOKEN }}
-          path: ./baldur
+          path: baldur
         continue-on-error: true
+
       - name: Check Out Liquibase Repo (${{ env.GITHUB_BASE_REF_SLUG }})
         uses: actions/checkout@v2
         if: steps.dependency.outcome != 'success'
@@ -35,16 +40,15 @@ jobs:
           repository: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/baldur
           ref: ${{ env.GITHUB_BASE_REF_SLUG }}
           token: ${{ secrets.GH_TOKEN }}
-          path: ./baldur
-      - name: Log In to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          path: baldur
+
       - name: Run Docker Compose
         run: |
           cd $GITHUB_WORKSPACE/${{ env.GITHUB_REPOSITORY_NAME_PART }}/docker
-          docker-compose -f docker-compose-test.yml --env-file .env.test.server up -d
+          docker-compose -f docker-compose-test.yml --env-file .env.test up -d --build
+        env:
+          ENV_VAR: ${{ secrets.ENV_VAR }}
+
       - name: Wait for Tests to Complete
         run: >
           while [ `docker inspect --format '{{json .State.Running}}' repo_container` = "true" ];
@@ -52,14 +56,17 @@ jobs:
           docker ps;
           sleep 5;
           done
+
       - name: Copy Test Results from Container to Host
         run: |
           docker cp repo_container:/app/${{ env.GITHUB_REPOSITORY_NAME_PART }}/auto_tests.xml .
+
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
         with:
           name: test_results
           path: auto_tests.xml
+
       - name: Publish Test Results from Host to GitHub Workflow
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()

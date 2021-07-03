@@ -3,6 +3,7 @@
 import datetime as dt
 from marduk.database.engines import compose_db
 from marduk import functions
+import os
 
 
 class TestFunctions():
@@ -57,6 +58,20 @@ class TestFunctions():
         # Get actual output.
         got = self.db_engine.execute(sql)
         got = got.fetchall()
+
+        # Test output.
+        assert got == exp
+
+
+    # Define environment variable tests.
+
+    def test_environment_variable_001(self) -> None:
+        """Tests the ENV_VAR environment variable value."""
+        # Define expected output.
+        exp = 'abc123def456'
+
+        # Get actual output.
+        got = os.environ['ENV_VAR']
 
         # Test output.
         assert got == exp

@@ -16,6 +16,7 @@ COPY . .
 
 # Set Python path environment variable.
 ENV PYTHONPATH "/app"
+ENV ENV_VAR ""
 
 # Run Pytests.
 CMD python3 /app/marduk/pytests/runner.py
