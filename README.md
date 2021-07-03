@@ -7,6 +7,7 @@
 1. [Files](#files-link)
 1. [Local Execution](#local-execution-link)
 1. [Fork Execution](#fork-execution-link)
+1. [Troubleshooting](#troubleshooting-link)
 
 
 <a id="scope-link"></a>
@@ -164,43 +165,68 @@ begin to accumulate. Use the following to remove orphaned images:
 
 <a id="fork-execution-link"></a>
 
-## 5. Fork Execution
-To fork this repo and execute the CI/CD pipelines:
-1. Create a fork of `marduk`.
-1. Create a fork of `baldur`.
+## 5. Template Execution
+To create a new repo from this template and execute the CI/CD pipelines:
+1. Create a repo from the `marduk` template.
+1. Create a repo from the `baldur` template.
 1. Navigate to `Settings > Secrets` in `marduk` and create the following
 secrets:
     - `DOCKER_PASSWORD`: Docker Hub token.
     - `DOCKER_USERNAME`: Docker Hub username.
     - `GH_TOKEN`: GitHub personal access token.
     - `ENV_VAR`: abc123def456
-1. Navigate to `Settings > Branches` in `marduk` and add a new branch
-protection rule.
+1. In Docker Hub, create a repo named `marduk`.
+1. In GitHub, branch off of `dev` in both `marduk` and `baldur`, using
+the same name for the new branch in both repos.
+1. Make an update (such as adding a new text file) to the new branch
+in `marduk`.
+1. Open a pull request in `marduk` using `dev` as the base branch and
+the new branch as the `head` branch.
+1. The pull request will refresh to include links to the to-be-completed
+GitHub Actions workflows which were initiated by opening a pull request
+to the `dev` branch.
+1. Navigate to the `Checks` tab in the pull request or the `Actions` tab
+in the `marduk` repo.
+1. The `Test Docker Image With Docker Compose` workflow will now be
+running.
+1. Once the workflow completes successfully, merge the pull request.
+1. Navigate back to the `Checks` tab in the pull request or the
+`Actions` tab in the `marduk` repo.
+1. The `Build & Publish Docker Image` workflow will now be running.
+1. Once the workflow completes successfully, refresh the `marduk`
+repo in Docker Hub.
+1. A new `marduk:dev` image will now be available.
+1. To enable branch protections, navigate to `Settings > Branches` in
+`marduk` and add a new branch protection rule.
     - Branch pattern name: `dev`
     - Require status checks to pass before merging: `✓`
     - Status checks that are required:
         - `Run Tests in Docker Compose`
         - `Unit Test Results`
     - Include Administrators: `✓`
-1. In Docker Hub, create a repo named `marduk`.
-1. Branch off of `dev` in both `marduk` and `baldur`, using the same name
-for the new branch in both repos.
-1. Make an update (such as adding a new text file) to the new branch
-in `marduk`.
-1. Open a pull request in `marduk` using `dev` as the base branch and
-the new branch as the `head` branch.
-1. The pull request will include links to the to-be-completed GitHub
-Actions workflows which were initiated by opening a pull request to the
-`dev` branch.
-1. Navigate to the `Checks` tab in the pull request or the `Actions` tab
-in the `marduk` repo.
-1. The `Test Docker Image With Docker Compose` workflow will now be running.
-1. Once the workflow completes successfully, the pull request will be
-eligible to be merged.
-1. Merge the pull request.
-1. Navigate to the `Checks` tab in the pull request or the `Actions` tab
-in the `marduk` repo.
-1. The `Build & Publish Docker Image` workflow will now be running.
-1. Once the workflow completes successfully, refresh the `marduk`
-repo in Docker Hub.
-1. A new `marduk:dev` image will now be available.
+    - Note: This step must be completed after the actions have run once.
+
+
+<a id="troubleshooting-link"></a>
+## 6. Troubleshooting
+
+### Local Execution
+1. If `repo_container` begins running unit tests before
+`liquibase_container` has exited with a `0` exit code:
+    - Stop `Docker Compose` with `Ctrl + C`.
+    - Run the `docker-compose` down command.
+    - Confirm the volume `compose_volume` does not exist.
+        - `docker volume ls`
+    - If the volume does exist, remove it.
+        - `docker volume rm compose_volume`
+
+
+### Template Execution
+1. If the `Unit Test Results` check does not appear after `Run Tests in
+Docker Compose` completes without errors:
+    - Merge the open PR into `dev`.
+    - Make a new change to the feature branch.
+    - Create a new PR into `dev`.
+    - Confirm the test actions execute and the `Unit Test Results`
+    check now appears.
+    - Repeat if necessary.
