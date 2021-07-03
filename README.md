@@ -6,7 +6,7 @@
 1. [Folders](#folders-link)
 1. [Files](#files-link)
 1. [Local Execution](#local-execution-link)
-1. [Fork Execution](#fork-execution-link)
+1. [Template Execution](#fork-execution-link)
 1. [Troubleshooting](#troubleshooting-link)
 
 
