@@ -224,10 +224,10 @@ has exited with a `0` exit code:
     Removing liquibase_container ... done
     Removing db_container        ... done
     Removing network docker_default
-    Removing volume docker_compose_volume
+    Removing volume compose_volume
     ```
-1. If `Removing volume docker_compose_volume` does not show in the
-terminal, check if the volume `compose_volume` exists.
+1. If `Removing volume compose_volume` does not show in the
+terminal, check if the volume `compose_volume` still exists.
     ```
     docker volume ls
     ```
