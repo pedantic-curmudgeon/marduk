@@ -215,15 +215,27 @@ If `repo_container` begins running unit tests before `liquibase_container`
 has exited with a `0` exit code:
 1. Stop `Docker Compose` with `Ctrl + C`.
 1. Run the `docker-compose` down command.
-1. Confirm the volume `compose_volume` does not exist.
+    ```
+    $ docker-compose -f docker-compose-test.yml --env-file .env.test down --volumes
+    ```
+1. The following should be logged in the terminal.
+    ```
+    Removing repo_container      ... done
+    Removing liquibase_container ... done
+    Removing db_container        ... done
+    Removing network docker_default
+    Removing volume docker_compose_volume
+    ```
+1. If `Removing volume docker_compose_volume` does not show in the
+terminal, check if the volume `compose_volume` exists.
     ```
     docker volume ls
     ```
-1. If the volume does exist, remove it.
+1. If the volume exists, remove it.
     ```
     docker volume rm compose_volume
     ```
-
+1. Attempt to re-run the local tests.
 
 ### Template Execution
 If the `Unit Test Results` check does not appear after `Run Tests in
