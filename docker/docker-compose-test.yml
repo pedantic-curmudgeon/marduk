@@ -59,6 +59,7 @@ services:
 
 volumes:
     compose_volume:
+        name: compose_volume
 
 
 # Terminal:
