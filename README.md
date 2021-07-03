@@ -211,22 +211,26 @@ repo in Docker Hub.
 ## 6. Troubleshooting
 
 ### Local Execution
-1. If `repo_container` begins running unit tests before
-`liquibase_container` has exited with a `0` exit code:
-    - Stop `Docker Compose` with `Ctrl + C`.
-    - Run the `docker-compose` down command.
-    - Confirm the volume `compose_volume` does not exist.
-        - `docker volume ls`
-    - If the volume does exist, remove it.
-        - `docker volume rm compose_volume`
+If `repo_container` begins running unit tests before `liquibase_container`
+has exited with a `0` exit code:
+1. Stop `Docker Compose` with `Ctrl + C`.
+1. Run the `docker-compose` down command.
+1. Confirm the volume `compose_volume` does not exist.
+    ```
+    docker volume ls
+    ```
+1. If the volume does exist, remove it.
+    ```
+    docker volume rm compose_volume
+    ```
 
 
 ### Template Execution
-1. If the `Unit Test Results` check does not appear after `Run Tests in
+If the `Unit Test Results` check does not appear after `Run Tests in
 Docker Compose` completes without errors:
-    - Merge the open PR into `dev`.
-    - Make a new change to the feature branch.
-    - Create a new PR into `dev`.
-    - Confirm the test actions execute and the `Unit Test Results`
-    check now appears.
-    - Repeat if necessary.
+1. Merge the open PR into `dev`.
+1. Make a new change to the feature branch.
+1. Create a new PR into `dev`.
+1. Confirm the test actions execute and the `Unit Test Results`
+check now appears.
+1. Repeat if necessary.
