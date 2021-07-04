@@ -229,11 +229,11 @@ has exited with a `0` exit code:
 1. If `Removing volume compose_volume` does not show in the
 terminal, check if the volume `compose_volume` still exists.
     ```
-    docker volume ls
+    $ docker volume ls
     ```
 1. If the volume exists, remove it.
     ```
-    docker volume rm compose_volume
+    $ docker volume rm compose_volume
     ```
 1. Attempt to re-run the local tests.
 
