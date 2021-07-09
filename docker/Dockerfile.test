@@ -1,8 +1,11 @@
 # Start from Python 3.8.2 base image.
 FROM python:3.8.2-slim
 
+# Set build arguments.
+ARG REPO_NAME
+
 # Set working directory.
-WORKDIR /app/marduk
+WORKDIR /app/${REPO_NAME}
 
 # Create directory for Docker volume.
 RUN mkdir /app/docker_volume
@@ -14,9 +17,11 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Copy full repo code to image.
 COPY . .
 
-# Set Python path environment variable.
+# Set Python path.
 ENV PYTHONPATH "/app"
+
+# Set environment variables.
 ENV ENV_VAR ""
 
 # Run Pytests.
-CMD python3 /app/marduk/pytests/runner.py
+CMD python3 /app/${REPO_NAME}/pytests/runner.py
