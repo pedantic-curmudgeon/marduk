@@ -1,4 +1,4 @@
-name: Test Docker Image With Docker Compose
+name: Run Automated Tests
 on:
   pull_request:
     types:
@@ -61,16 +61,17 @@ jobs:
         run: |
           docker cp repo_container:/app/${{ env.GITHUB_REPOSITORY_NAME_PART }}/auto_tests.xml .
 
-      - name: Upload Test Results
+      - name: Upload Test Results from Host as Workflow Artifact
         uses: actions/upload-artifact@v2
         with:
           name: test_results
           path: auto_tests.xml
 
-      - name: Publish Test Results from Host to GitHub Workflow
+      - name: Publish Test Results from Host to GitHub Workflow Job
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
+          check_name: Test Results
           files: |
             auto_tests.xml
 
