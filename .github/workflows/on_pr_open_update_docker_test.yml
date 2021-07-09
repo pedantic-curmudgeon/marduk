@@ -1,4 +1,4 @@
-name: Run Automated Tests
+name: Automated Tests
 on:
   pull_request:
     types:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   run_tests_in_docker_compose:
-    name: Run Tests in Docker Compose
+    name: Docker Compose Tests
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
