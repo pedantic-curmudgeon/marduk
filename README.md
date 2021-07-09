@@ -82,7 +82,8 @@ container alongside a Docker volume and network to allow the containers
 to interact and the tests to run.
 
 ### [docker/.env.test](docker/.env.test)
-Environment variables used by the Docker Compose file.
+Environment variables and build arguments used by the Dockerfile and
+the Docker Compose file.
 
 ### [pytests/test_functions.py](pytests/test_functions.py)
 Test class with test scenarios for the `marduk.functions` module.
