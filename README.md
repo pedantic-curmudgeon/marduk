@@ -202,8 +202,8 @@ repo in Docker Hub.
     - Branch pattern name: `dev`
     - Require status checks to pass before merging: `✓`
     - Status checks that are required:
-        - `Run Tests in Docker Compose`
-        - `Unit Test Results`
+        - `Docker Compose Tests`
+        - `Test Results`
     - Include Administrators: `✓`
     - Note: This step must be completed after the actions have run once.
 
