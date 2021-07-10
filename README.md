@@ -35,7 +35,7 @@ seconds to see if `liquibase update` has been executed succesfully.
 1. When `marduk` finds the `Liquibase` success output in the Docker
 volume, it executes the test runner.
 1. The test results are surfaced to the GitHub workflow as an artifact
-on the workflow execution `Summary` and in the `Unit Test Results` job.
+on the workflow execution `Summary` and in the `Test Results` job.
 The results are also added to the pull request.
 
 When a pull request is merged to the `dev` branch:
@@ -97,7 +97,7 @@ open, update, or close to `dev`:
 1. Checks out the `baldur` repo to get the `liquibase_changelog.sql` file
 1. Executes the `marduk` tests using the Docker Compose file
 1. Uploads the `auto_tests.xml` test results as a workflow artifact
-1. Publishes the `auto_tests.xml` test results to a workflow step
+1. Publishes the `auto_tests.xml` test results to a workflow job
 
 ### [.github/workflows/on_pr_merge_docker_image_build_and_publish.yml](.github/workflows/on_pr_merge_docker_image_build_and_publish.yml)
 A custom workflow which performs the following actions on a pull request
@@ -209,7 +209,7 @@ repo in Docker Hub.
 ## 6. Troubleshooting
 
 ### Local Execution
-If `repo_container` begins running unit tests before `liquibase_container`
+If `repo_container` begins running tests before `liquibase_container`
 has exited with a `0` exit code:
 1. Stop `Docker Compose` with `Ctrl + C`.
 1. Run the `docker-compose` down command.
@@ -236,8 +236,8 @@ terminal, check if the volume `compose_volume` still exists.
 1. Attempt to re-run the local tests.
 
 ### Template Execution
-If the `Test Results` check does not appear after `Run Tests in
-Docker Compose` completes without errors:
+If the `Test Results` check does not appear after `Docker Compose Tests`
+completes without errors:
 1. Merge the open PR into `dev`.
 1. Make a new change to the feature branch.
 1. Create a new PR into `dev`.
