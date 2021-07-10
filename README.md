@@ -236,8 +236,8 @@ terminal, check if the volume `compose_volume` still exists.
 1. Attempt to re-run the local tests.
 
 ### Template Execution
-If the `Test Results` check does not appear after `Run Tests in
-Docker Compose` completes without errors:
+If the `Test Results` check does not appear after `Docker Compose Tests`
+completes without errors:
 1. Merge the open PR into `dev`.
 1. Make a new change to the feature branch.
 1. Create a new PR into `dev`.

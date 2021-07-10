@@ -9,7 +9,7 @@ on:
       - dev
 
 jobs:
-  run_tests_in_docker_compose:
+  docker_compose_tests:
     name: Docker Compose Tests
     runs-on: ubuntu-latest
     timeout-minutes: 60

@@ -7,10 +7,10 @@ on:
       - dev
 
 jobs:
-  push_image_to_docker_hub:
+  docker_image_build_and_push:
     # if: github.event.pull_request.merged == true
     if: github.event.pull_request.merged
-    name: Build & Push Docker Image to Docker Hub
+    name: Docker Image Build & Push to Docker Hub
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
