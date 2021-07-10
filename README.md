@@ -209,7 +209,7 @@ repo in Docker Hub.
 ## 6. Troubleshooting
 
 ### Local Execution
-If `repo_container` begins running unit tests before `liquibase_container`
+If `repo_container` begins running tests before `liquibase_container`
 has exited with a `0` exit code:
 1. Stop `Docker Compose` with `Ctrl + C`.
 1. Run the `docker-compose` down command.
