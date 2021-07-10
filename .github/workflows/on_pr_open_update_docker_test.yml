@@ -22,19 +22,19 @@ jobs:
         with:
           path: ${{ env.GITHUB_REPOSITORY_NAME_PART }}
 
-      - name: Check Out Liquibase Repo (${{ env.GITHUB_HEAD_REF_SLUG }})
-        id: dependency
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/baldur
-          ref: ${{ env.GITHUB_HEAD_REF_SLUG }}
-          token: ${{ secrets.GH_TOKEN }}
-          path: baldur
-        continue-on-error: true
+      # - name: Check Out Liquibase Repo (${{ env.GITHUB_HEAD_REF_SLUG }})
+      #   id: dependency
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/baldur
+      #     ref: ${{ env.GITHUB_HEAD_REF_SLUG }}
+      #     token: ${{ secrets.GH_TOKEN }}
+      #     path: baldur
+      #   continue-on-error: true
 
       - name: Check Out Liquibase Repo (${{ env.GITHUB_BASE_REF_SLUG }})
         uses: actions/checkout@v2
-        if: steps.dependency.outcome != 'success'
+        # if: steps.dependency.outcome != 'success'
         # if: steps.dependency.exit_code != 0
         with:
           repository: ${{ env.GITHUB_REPOSITORY_OWNER_PART_SLUG }}/baldur
@@ -77,6 +77,9 @@ jobs:
 
 
 # Notes:
-# - GITHUB_WORKSPACE = /home/runner/work/marduk/marduk
-# - Determined GITHUB_WORKSPACE path via `echo $GITHUB_WORKSPACE`
-# - Determined full repo paths via `pwd`, `ls -la`, and `cd`
+# GITHUB_WORKSPACE = /home/runner/work/marduk/marduk
+# Determined GITHUB_WORKSPACE path via `echo $GITHUB_WORKSPACE`
+# Determined full repo paths via `pwd`, `ls -la`, and `cd`
+# Uncomment lines 25-33 and 37 to have the workflow first attempt
+# to check out a baldur branch named for the HEAD branch before falling
+# back to check out a branch named for the BASE branch
