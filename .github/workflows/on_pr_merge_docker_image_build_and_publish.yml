@@ -1,4 +1,4 @@
-name: Build & Publish Docker Image
+name: Docker Image Build & Publication
 on:
   pull_request:
     types:
@@ -10,7 +10,7 @@ jobs:
   push_image_to_docker_hub:
     # if: github.event.pull_request.merged == true
     if: github.event.pull_request.merged
-    name: Push Docker Image to Docker Hub
+    name: Build & Push Docker Image to Docker Hub
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker Image
+      - name: Build & Push Docker Image
         uses: docker/build-push-action@v2
         with:
           context: .

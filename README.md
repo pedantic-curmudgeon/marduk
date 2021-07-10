@@ -20,9 +20,8 @@ When a pull request is opened, updated, or reopened to the `dev` branch:
 1. A separate repository, [baldur](https://github.com/raegancbarker/baldur),
 is cloned to obtain its `liquibase_changelog.sql` file which is used to
 update the test database when the Docker Compose file is executed.
-(If the branch in `marduk` from which the GitHub workflow was initiated
-exists in `baldur`, that branch will be cloned from `baldur`. Otherwise,
-the `dev` branch will be cloned.)
+The branch cloned from `baldur` will match the `head` branch of the PR
+initiated in `marduk`.
 1. A Docker Compose file builds the `marduk` image and starts it as a
 container along with a standard
 [MariaDB Docker image](https://hub.docker.com/_/mariadb) and a standard
@@ -82,7 +81,8 @@ container alongside a Docker volume and network to allow the containers
 to interact and the tests to run.
 
 ### [docker/.env.test](docker/.env.test)
-Environment variables used by the Docker Compose file.
+Environment variables and build arguments used by the Dockerfile and
+the Docker Compose file.
 
 ### [pytests/test_functions.py](pytests/test_functions.py)
 Test class with test scenarios for the `marduk.functions` module.
@@ -93,11 +93,11 @@ Test runner to execute tests via `pytest`.
 ### [.github/workflows/on_pr_open_update_docker_build_test_.yml](.github/workflows/on_pr_open_update_docker_test.yml)
 A custom workflow which performs the following actions on a pull request
 open, update, or close to `dev`:
+1. Checks out the `marduk` repo to get the Docker Compose test files
 1. Checks out the `baldur` repo to get the `liquibase_changelog.sql` file
-1. Checks out the `marduk` repo to get the Docker Compose tests file
 1. Executes the `marduk` tests using the Docker Compose file
-1. Uploads the `auto_tests.xml` test results as an artifact
-1. Publishes the `auto_tests.xml` test results to the workflow
+1. Uploads the `auto_tests.xml` test results as a workflow artifact
+1. Publishes the `auto_tests.xml` test results to a workflow step
 
 ### [.github/workflows/on_pr_merge_docker_image_build_and_publish.yml](.github/workflows/on_pr_merge_docker_image_build_and_publish.yml)
 A custom workflow which performs the following actions on a pull request
@@ -176,8 +176,7 @@ secrets:
     - `GH_TOKEN`: GitHub personal access token.
     - `ENV_VAR`: abc123def456
 1. In Docker Hub, create a repo named `marduk`.
-1. In GitHub, branch off of `dev` in both `marduk` and `baldur`, using
-the same name for the new branch in both repos.
+1. In GitHub, branch off of `dev` in `marduk`.
 1. Make an update (such as adding a new text file) to the new branch
 in `marduk`.
 1. Open a pull request in `marduk` using `dev` as the base branch and
@@ -187,12 +186,11 @@ GitHub Actions workflows which were initiated by opening a pull request
 to the `dev` branch.
 1. Navigate to the `Checks` tab in the pull request or the `Actions` tab
 in the `marduk` repo.
-1. The `Test Docker Image With Docker Compose` workflow will now be
-running.
+1. The `Automated Tests` workflow will now be running.
 1. Once the workflow completes successfully, merge the pull request.
 1. Navigate back to the `Checks` tab in the pull request or the
 `Actions` tab in the `marduk` repo.
-1. The `Build & Publish Docker Image` workflow will now be running.
+1. The `Docker Image Build & Publication` workflow will now be running.
 1. Once the workflow completes successfully, refresh the `marduk`
 repo in Docker Hub.
 1. A new `marduk:dev` image will now be available.
@@ -201,8 +199,8 @@ repo in Docker Hub.
     - Branch pattern name: `dev`
     - Require status checks to pass before merging: `✓`
     - Status checks that are required:
-        - `Run Tests in Docker Compose`
-        - `Unit Test Results`
+        - `Docker Compose Tests`
+        - `Test Results`
     - Include Administrators: `✓`
     - Note: This step must be completed after the actions have run once.
 
@@ -238,11 +236,11 @@ terminal, check if the volume `compose_volume` still exists.
 1. Attempt to re-run the local tests.
 
 ### Template Execution
-If the `Unit Test Results` check does not appear after `Run Tests in
+If the `Test Results` check does not appear after `Run Tests in
 Docker Compose` completes without errors:
 1. Merge the open PR into `dev`.
 1. Make a new change to the feature branch.
 1. Create a new PR into `dev`.
-1. Confirm the test actions execute and the `Unit Test Results`
-check now appears.
+1. Confirm the test actions execute and the `Test Results` check now
+appears.
 1. Repeat if necessary.
