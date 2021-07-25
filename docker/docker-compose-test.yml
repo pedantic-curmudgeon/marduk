@@ -35,7 +35,7 @@ services:
             touch liquibase.complete
     # Build new repo image and run tests.
     repo:
-        image: test/${REPO_NAME}:latest
+        image: ${REPO_NAME}/test:latest
         build:
             context: ../
             dockerfile: docker/Dockerfile.test
