@@ -23,7 +23,7 @@ jobs:
       - name: Extract Docker .env File
         uses: c-py/action-dotenv-to-setenv@v3
         with:
-          env-file: docker/.env
+          env-file: docker/.env.test
 
       - name: Set Up Docker BuildX
         uses: docker/setup-buildx-action@v1
