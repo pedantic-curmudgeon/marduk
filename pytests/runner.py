@@ -1,17 +1,24 @@
 import click
+from pathlib import Path
 import pytest
-from marduk.database import compose_db
-from marduk.functions import db_alive
+
+root_folder = Path(__file__).parents[1]
+folder_name = root_folder.name
 
 
 @click.command()
 def run_tests():
     """Executes all tests in the folder."""
-    if db_alive(compose_db):
-        pytest.main(['-v', '--junitxml=auto_tests.xml'])
-    else:
-        msg = 'Unable to connect to test database.'
-        raise ConnectionError(msg)
+    pytest.main([
+        '-v',
+        '--junitxml=auto_tests.xml',
+        f'--cov={folder_name}',
+        '--cov-report=xml',
+        '--cov-report=html',
+        '--cov-report=term'
+        ]
+    )
+
 
 if __name__ == '__main__':
     run_tests()
