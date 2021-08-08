@@ -13,6 +13,7 @@ def run_tests():
         '-v',
         '--junitxml=auto_tests.xml',
         f'--cov={folder_name}',
+        '--cov-branch',
         '--cov-report=xml',
         '--cov-report=html',
         '--cov-report=term'
