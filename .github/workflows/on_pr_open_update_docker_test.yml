@@ -61,11 +61,24 @@ jobs:
         run: |
           docker cp repo_container:/app/${{ env.GITHUB_REPOSITORY_NAME_PART }}/auto_tests.xml .
 
+      - name: Copy Coverage Results from Container to Host
+        run: |
+          docker cp repo_container:/app/${{ env.GITHUB_REPOSITORY_NAME_PART }}/coverage.xml .
+          docker cp repo_container:/app/${{ env.GITHUB_REPOSITORY_NAME_PART }}/htmlcov ./htmlcov
+
       - name: Upload Test Results from Host as Workflow Artifact
         uses: actions/upload-artifact@v2
         with:
           name: test_results
           path: auto_tests.xml
+
+      - name: Upload Coverage Results from Host as Workflow Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage_results
+          path: |
+            coverage.xml
+            htmlcov/
 
       - name: Publish Test Results from Host to GitHub Workflow Job
         uses: EnricoMi/publish-unit-test-result-action@v1
@@ -74,6 +87,21 @@ jobs:
           check_name: Test Results
           files: |
             auto_tests.xml
+
+      - name: Create Code Coverage Summary
+        uses: irongut/CodeCoverageSummary@v1.0.1
+        with:
+          filename: coverage.xml
+          badge: true
+          format: 'markdown'
+          output: 'both'
+
+      - name: Add Code Coverage Summary PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2.1.0
+        if: github.event_name == 'pull_request'
+        with:
+          header: code-coverage
+          path: code-coverage-results.md
 
 
 # Notes:

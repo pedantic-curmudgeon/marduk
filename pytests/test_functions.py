@@ -4,13 +4,20 @@ import datetime as dt
 from marduk.database.engines import compose_db
 from marduk import functions
 import os
+from sqlalchemy import create_engine
 
 
 class TestFunctions():
     """Test class containing scenarios for the functions module."""
 
-    # Define __init__-like parameters.
-    db_engine = compose_db
+    # Define setup method.
+
+    def setup_class(self) -> None:
+        """Sets up the test class."""
+        self.db_engine = compose_db
+        if not functions.db_alive(self.db_engine):
+            msg = 'Unable to connect to test database.'
+            raise ConnectionError(msg)
 
 
     # Define string tests.
@@ -46,6 +53,48 @@ class TestFunctions():
 
 
     # Define database tests.
+
+    def test_db_alive_001(self) -> None:
+        """Tests db_alive with a non-existent database."""
+        # Define non-existent database engine inputs.
+        db_cfg = {
+            'user': 'bad_user',
+            'password': 'bad_password',
+            'server': 'bad_server',
+            'port': 3306,
+            'db': 'bad_db',
+            'charset': 'utf8mb4'
+        }
+
+        db_engine = create_engine(
+            ("mysql+pymysql://{user}:{password}@{server}:{port}/{db}"
+            "?charset={charset}").format(**db_cfg),
+            pool_recycle=3600
+        )
+
+        # Get results.
+        result = functions.db_alive(
+            engine=db_engine,
+            wait_max=2,
+            wait_increment=1
+        )
+
+        # Test results.
+        assert not result
+
+
+    def test_db_alive_002(self) -> None:
+        """Tests db_alive with an active database."""
+        # Get results.
+        result = functions.db_alive(
+            engine=self.db_engine,
+            wait_max=3,
+            wait_increment=1
+        )
+
+        # Test results.
+        assert result
+
 
     def test_query_db_001(self) -> None:
         """Tests querying the Liquibase-updated database."""
