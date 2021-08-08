@@ -151,6 +151,12 @@ running containers.
     repo_container | ---------------- generated xml file: /app/marduk/auto_tests.xml ----------------
     repo_container | ============================== 4 passed in 0.03s ===============================
     ```
+1. *(Optional)* Copy the test and coverage results from the Docker
+container to the local machine.
+    ```
+    docker cp repo_container:/app/marduk/coverage.xml .
+    docker cp repo_container:/app/marduk/htmlcov ./htmlcov
+    ```
 1. Remove the Docker Compose stack, including the containers, network,
 and volume, from a terminal session in `/marduk/docker`.
     ```
