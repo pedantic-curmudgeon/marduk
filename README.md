@@ -1,3 +1,5 @@
+[![Automated Tests](https://github.com/raegancbarker/marduk/actions/workflows/on_pr_open_update_docker_test.yml/badge.svg)](https://github.com/raegancbarker/marduk/actions/workflows/on_pr_open_update_docker_test.yml)
+
 # marduk
 
 ## Table of Contents
