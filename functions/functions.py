@@ -55,12 +55,11 @@ def db_alive(engine: Engine,
 
     # Check for database response.
     while not db_alive and wait_time < wait_max:
-        if wait_time <= wait_max:
-            try:
-                engine.execute(sql)
-                db_alive = True
-            except OperationalError:
-                time.sleep(wait_increment)
-                wait_time += wait_increment
+        try:
+            engine.execute(sql)
+            db_alive = True
+        except OperationalError:
+            time.sleep(wait_increment)
+            wait_time += wait_increment
 
     return db_alive
