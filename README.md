@@ -136,20 +136,45 @@ running containers.
 1. Once the test executions have completed as shown below, press
 `Ctrl + C` in the terminal to stop the Docker Compose stack.
     ```
+    liquibase_container | Liquibase: Update has been successful.
     liquibase_container exited with code 0
     repo_container | ============================= test session starts ==============================
     repo_container | platform linux -- Python 3.8.2, pytest-6.2.3, py-1.10.0, pluggy-0.13.1 -- /usr/local/bin/python3
     repo_container | cachedir: .pytest_cache
     repo_container | rootdir: /app/marduk
-    repo_container | collecting ... collected 4 items
+    repo_container | plugins: cov-2.12.1
+    repo_container | collecting ... collected 6 items
     repo_container |
-    repo_container | pytests/test_functions.py::TestFunctions::test_stringify_list_001 PASSED [ 25%]
-    repo_container | pytests/test_functions.py::TestFunctions::test_stringify_list_002 PASSED [ 50%]
-    repo_container | pytests/test_functions.py::TestFunctions::test_query_db_001 PASSED       [ 75%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_stringify_list_001 PASSED [ 16%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_stringify_list_002 PASSED [ 33%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_db_alive_001 PASSED       [ 50%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_db_alive_002 PASSED       [ 66%]
+    repo_container | pytests/test_functions.py::TestFunctions::test_query_db_001 PASSED       [ 83%]
     repo_container | pytests/test_functions.py::TestFunctions::test_environment_variable_001 PASSED [100%]
     repo_container |
     repo_container | ---------------- generated xml file: /app/marduk/auto_tests.xml ----------------
-    repo_container | ============================== 4 passed in 0.03s ===============================
+    repo_container |
+    repo_container | ----------- coverage: platform linux, python 3.8.2-final-0 -----------
+    repo_container | Name                     Stmts   Miss Branch BrPart  Cover
+    repo_container | ----------------------------------------------------------
+    repo_container | __init__.py                  2      0      0      0   100%
+    repo_container | database/__init__.py         1      0      0      0   100%
+    repo_container | database/engines.py         15      0      0      0   100%
+    repo_container | functions/__init__.py        1      0      0      0   100%
+    repo_container | functions/functions.py      20      0      8      0   100%
+    repo_container | ----------------------------------------------------------
+    repo_container | TOTAL                       39      0      8      0   100%
+    repo_container | Coverage HTML written to dir htmlcov
+    repo_container | Coverage XML written to file coverage.xml
+    repo_container |
+    repo_container | ============================== 6 passed in 2.53s ===============================
+    repo_container exited with code 0
+    ```
+1. *(Optional)* Copy the test and coverage results from the Docker
+container to the local machine.
+    ```
+    docker cp repo_container:/app/marduk/coverage.xml .
+    docker cp repo_container:/app/marduk/htmlcov ./htmlcov
     ```
 1. Remove the Docker Compose stack, including the containers, network,
 and volume, from a terminal session in `/marduk/docker`.

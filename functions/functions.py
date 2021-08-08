@@ -52,16 +52,14 @@ def db_alive(engine: Engine,
     sql = 'select * from information_schema.schemata;'
     wait_time = 0
     db_alive = False
-    results = None
 
     # Check for database response.
-    while not db_alive:
-        if wait_time <= wait_max:
-            try:
-                results = engine.execute(sql)
-                db_alive = True
-            except OperationalError:
-                time.sleep(wait_increment)
-                wait_time += wait_increment
+    while not db_alive and wait_time < wait_max:
+        try:
+            engine.execute(sql)
+            db_alive = True
+        except OperationalError:
+            time.sleep(wait_increment)
+            wait_time += wait_increment
 
     return db_alive
