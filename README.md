@@ -38,7 +38,9 @@ seconds to see if `liquibase update` has been executed succesfully.
 volume, it executes the test runner.
 1. The test results are surfaced to the GitHub workflow as an artifact
 on the workflow execution `Summary` and in the `Test Results` job.
-The results are also added to the pull request.
+The results are also added as a comment on the pull request.
+1. The code coverage results are added as a comment on the pull request.
+
 
 When a pull request is merged to the `dev` branch:
 1. The `Dockerfile.test` image is built using the `dev` tag.
@@ -90,16 +92,22 @@ the Docker Compose file.
 Test class with test scenarios for the `marduk.functions` module.
 
 ### [pytests/runner.py](pytests/runner.py)
-Test runner to execute tests via `pytest`.
+Test runner to execute tests via `pytest` with code coverage
+analysis via `pytest-cov`.
 
 ### [.github/workflows/on_pr_open_update_docker_build_test_.yml](.github/workflows/on_pr_open_update_docker_test.yml)
 A custom workflow which performs the following actions on a pull request
 open, update, or close to `dev`:
 1. Checks out the `marduk` repo to get the Docker Compose test files
 1. Checks out the `baldur` repo to get the `liquibase_changelog.sql` file
-1. Executes the `marduk` tests using the Docker Compose file
-1. Uploads the `auto_tests.xml` test results as a workflow artifact
-1. Publishes the `auto_tests.xml` test results to a workflow job
+1. Executes the `marduk` tests and coverage analysis using the Docker
+Compose file
+3. Uploads the `auto_tests.xml` test results as a workflow artifact
+4. Uploads the `coverage.xml` and `htmlcov` coverage results as a workflow
+artifact
+1. Publishes the `auto_tests.xml` test results to a workflow job and a
+PR comment
+1. Publishes a summary of the coverage results as a PR comment
 
 ### [.github/workflows/on_pr_merge_docker_image_build_and_publish.yml](.github/workflows/on_pr_merge_docker_image_build_and_publish.yml)
 A custom workflow which performs the following actions on a pull request
